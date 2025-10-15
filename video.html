@@ -3,59 +3,237 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Talks & Videos — Ons Aouedi</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Talks & Videos — Dr. Ons Aouedi</title>
+  <meta name="description" content="Conference presentations and talks by Dr. Ons Aouedi on federated learning, network traffic analysis, and intrusion detection." />
+  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="icon" type="image/png" href="img_profile.png" />
+  <style>
+    /* Video page specific styles */
+    body {
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    .video-page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    
+    .video-section {
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    
+    .video-section h2 {
+      color: var(--text);
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+    
+    .video-info {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      padding: 0.75rem;
+      background: var(--bg);
+      border-radius: var(--radius);
+      border-left: 3px solid var(--primary);
+    }
+    
+    .video-container {
+      position: relative;
+      width: 100%;
+      background: #000;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 600px;
+    }
+    
+    .error-message {
+      padding: 1.5rem;
+      background: #fef2f2;
+      color: #991b1b;
+      border-radius: var(--radius);
+      margin-top: 1rem;
+      border: 1px solid #fca5a5;
+    }
+    
+    [data-theme="dark"] .error-message {
+      background: #7f1d1d;
+      color: #fecaca;
+      border-color: #991b1b;
+    }
+    
+    .error-message p {
+      margin-bottom: 0.5rem;
+    }
+    
+    .error-message strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    
+    .error-message ul {
+      margin: 0.5rem 0 0 1.5rem;
+    }
+    
+    .error-message li {
+      margin-bottom: 0.25rem;
+    }
+    
+    .error-message a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    
+    .award-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    
+    @media (max-width: 640px) {
+      .video-page-container {
+        padding: 1rem;
+      }
+      
+      .video-section {
+        padding: 1.25rem;
+      }
+      
+      .video-section h2 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
 </head>
 <body>
 <header class="site-header">
-  <div class="brand">
-    <h1>Talks & Videos</h1>
-    <p class="tagline"><a href="index.html">← Back to profile</a></p>
+  <div class="header-content">
+    <div class="brand">
+      <h1>Talks & Videos</h1>
+      <p class="tagline"><a href="index.html">← Back to profile</a></p>
+    </div>
   </div>
 </header>
 
-<main class="container">
-  <div class="content" style="grid-column: 1 / -1;">
-    <section id="fluids">
-      <h2>1. FLUIDS: Federated Learning with Semi-Supervised Approach for Intrusion Detection</h2>
-      <video width="100%" controls preload="metadata">
+<main class="video-page-container">
+  <section class="video-section">
+    <h2>1. FLUIDS: Federated Learning with Semi-Supervised Approach for Intrusion Detection</h2>
+    <div class="video-info">
+      <strong>Conference:</strong> IEEE CCNC 2022, Los Angeles, USA
+    </div>
+    <div class="video-container">
+      <video controls preload="metadata">
         <source src="CCNC.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-    </section>
+    </div>
+  </section>
 
-    <section id="icc" style="margin-top:2rem">
-      <h2>2. Performance Evaluation of Feature Selection and Tree-Based Algorithms for Traffic Classification</h2>
-      <video width="100%" controls preload="metadata">
+  <section class="video-section">
+    <h2>2. Performance Evaluation of Feature Selection and Tree-Based Algorithms</h2>
+    <div class="video-info">
+      <strong>Conference:</strong> ICC Workshop on Data Driven Intelligence for Networks and Systems (DDISN) 2021, Montreal, Canada
+    </div>
+    <div class="video-container">
+      <video controls preload="metadata">
         <source src="ICC.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-    </section>
+    </div>
+  </section>
 
-    <section id="icnp" style="margin-top:2rem">
-      <h2>3. A Semi-Supervised Stacked Autoencoder for Network Traffic Classification</h2>
-      <video width="100%" controls preload="metadata">
+  <section class="video-section">
+    <h2>3. A Semi-Supervised Stacked Autoencoder for Network Traffic Classification</h2>
+    <div class="video-info">
+      <strong>Conference:</strong> ICNP Workshop HDR-Nets-2020, Madrid, Spain
+    </div>
+    <div class="video-container">
+      <video controls preload="metadata">
         <source src="icnp.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-    </section>
+    </div>
+  </section>
 
-    <section id="icc_conf" style="margin-top:2rem">
-      <h2>4. Intrusion Detection for Softwarized Networks with Semi-Supervised Federated Learning</h2>
-      <video width="100%" controls preload="metadata">
+  <section class="video-section">
+    <h2>4. Intrusion Detection for Softwarized Networks with Semi-Supervised Federated Learning 
+      <span class="award-badge">🏆 Best Paper Award</span>
+    </h2>
+    <div class="video-info">
+      <strong>Conference:</strong> IEEE ICC 2022, Seoul, South Korea
+    </div>
+    <div class="video-container">
+      <video controls preload="metadata">
         <source src="ICC.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-    </section>
+    </div>
+  </section>
 
-    <section id="noms" style="margin-top:2rem">
-      <h2>5. Decision Tree-Based Blending Method Using Deep Learning for Network Management</h2>
-      <video width="100%" controls preload="metadata">
+  <section class="video-section">
+    <h2>5. Decision Tree-Based Blending Method Using Deep Learning for Network Management</h2>
+    <div class="video-info">
+      <strong>Conference:</strong> IEEE/IFIP NOMS 2022, Budapest, Hungary
+    </div>
+    <div class="video-container">
+      <video controls preload="metadata">
         <source src="NOMS.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
       </video>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
-  <small>© <span id="y"></span> Ons Aouedi</small>
+  <small>© <span id="y"></span> Ons Aouedi • Conference Presentations & Talks</small>
 </footer>
-<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+
+<script>
+  (function() {
+    'use strict';
+    
+    // Update copyright year
+    document.getElementById('y').textContent = new Date().getFullYear();
+    
+    // Video error handling
+    const videos = document.querySelectorAll('video');
+    
+    videos.forEach(function(video) {
+      video.addEventListener('error', function() {
+        const container = this.closest('.video-container');
+        if (container && !container.querySelector('.error-message')) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error-message';
+          errorDiv.innerHTML = '<strong>Unable to load video</strong><p>The video file may be too large or unavailable. Please try:</p><ul><li>Refreshing the page</li><li>Checking your internet connection</li><li>Viewing on a desktop browser</li></ul>';
+          container.appendChild(errorDiv);
+        }
+      });
+      
+      // Try to load the video
+      video.load();
+    });
+  })();
+</script>
 </body>
 </html>

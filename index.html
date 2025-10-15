@@ -24,7 +24,7 @@
   
   <link rel="canonical" href="./" />
   <link rel="preload" href="img_profile.png" as="image" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=8" />
   <link rel="icon" type="image/png" href="img_profile.png" />
 </head>
 
@@ -109,7 +109,7 @@
       </blockquote>
     </section>
 
-    <p class="updated">Latest update: 02/01/2025</p>
+    <p class="updated">Latest update: 15/10/2025</p>
   </aside>
 
   <article class="content">
@@ -207,11 +207,12 @@
               <span class="tag">Human Activity Recognition</span>
             </div>
           </li>
-          <li class="pub-item">
+          <li class="pub-item highlight-paper">
             <div class="pub-content">
-              <strong>O. Aouedi</strong>, T.H. Vu, A. Sacco, DC. Nguyen, K. Piamrat, G. Marchetto, QV. Pham, "A Survey on Intelligent Internet of Things: Applications, Security, Privacy, and Future Directions," <em>IEEE Communications Surveys & Tutorials (COMST)</em>, 06/2024.
+              <strong>O. Aouedi</strong>, T.H. Vu, A. Sacco, DC. Nguyen, K. Piamrat, G. Marchetto, QV. Pham, "A Survey on Intelligent Internet of Things: Applications, Security, Privacy, and Future Directions," <em>IEEE Communications Surveys & Tutorials (COMST)</em>, 06/2024. — <em class="highlight">Top Popular Article</em>
             </div>
             <div class="pub-tags">
+              <span class="tag award-tag">⭐ Top Popular Article</span>
               <span class="tag">IoT</span>
               <span class="tag">Security</span>
               <span class="tag">Survey</span>
@@ -302,11 +303,12 @@
               <span class="tag">Survey</span>
             </div>
           </li>
-          <li class="pub-item">
+          <li class="pub-item highlight-paper">
             <div class="pub-content">
-              S. Agrawal, S. Sarkar, <strong>O. Aouedi</strong>, G. Yenduri, K. Piamrat, S. Bhattacharya, P.K.R Maddikunta, T. R. Gadekallu, "Federated Learning for Intrusion Detection System: Concepts, Challenges and Future Directions," <em>Elsevier Computer Communications</em>, 11/2022.
+              S. Agrawal, S. Sarkar, <strong>O. Aouedi</strong>, G. Yenduri, K. Piamrat, S. Bhattacharya, P.K.R Maddikunta, T. R. Gadekallu, "Federated Learning for Intrusion Detection System: Concepts, Challenges and Future Directions," <em>Elsevier Computer Communications</em>, 11/2022. — <em class="highlight">Top Cited Article</em>
             </div>
             <div class="pub-tags">
+              <span class="tag award-tag">📖 Top Cited Article</span>
               <span class="tag">Federated Learning</span>
               <span class="tag">Intrusion Detection</span>
               <span class="tag">Survey</span>
@@ -566,9 +568,9 @@
     </section>
 
     <section aria-label="Visitor stats" class="flagcounter">
-      <a href="https://info.flagcounter.com/t8xE">
-        <img src="https://s01.flagcounter.com/count2/t8xE/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_20/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
-             alt="Flag Counter" width="160" height="110" />
+      <a href="https://info.flagcounter.com/t8xE" target="_blank" rel="noopener noreferrer">
+        <img src="https://s01.flagcounter.com/count2/t8xE/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_30/viewers_0/labels_1/pageviews_1/flags_0/percent_0/"
+             alt="Visitor Statistics" loading="lazy" />
       </a>
     </section>
   </article>
@@ -578,34 +580,30 @@
   <small>© <span id="y"></span> Ons Aouedi • No cookies, no tracking • Last updated 15/10/2025</small>
 </footer>
 <script>
-  // Progressive enhancement with modern features
-  document.addEventListener('DOMContentLoaded', function() {
+  // Professional enhancements with smooth animations
+  (function() {
+    'use strict';
+    
     // Update copyright year
     document.getElementById('y').textContent = new Date().getFullYear();
     
-    // Theme toggle functionality
+    // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('.theme-icon');
-    
-    // Check for saved theme preference or default to light mode
     const currentTheme = localStorage.getItem('theme') || 'light';
+    
     document.documentElement.setAttribute('data-theme', currentTheme);
-    updateThemeIcon(currentTheme);
+    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
     
     themeToggle.addEventListener('click', function() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
-      updateThemeIcon(newTheme);
+      themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
     });
     
-    function updateThemeIcon(theme) {
-      themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
-    }
-    
-    // Mobile menu toggle
+    // Mobile menu
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const siteNav = document.querySelector('.site-nav');
     
@@ -615,63 +613,34 @@
       siteNav.classList.toggle('mobile-open');
     });
     
-    // Publication filtering
+    // Publication filters
     const filterButtons = document.querySelectorAll('.filter-btn');
     const publicationSections = document.querySelectorAll('.publication-section');
     
     filterButtons.forEach(button => {
       button.addEventListener('click', function() {
         const filter = this.getAttribute('data-filter');
-        
-        // Update active button
         filterButtons.forEach(btn => btn.classList.remove('active'));
         this.classList.add('active');
         
-        // Show/hide sections
         publicationSections.forEach(section => {
-          if (filter === 'all' || section.getAttribute('data-category') === filter) {
-            section.style.display = 'block';
-            section.style.animation = 'fadeIn 0.3s ease-in';
-          } else {
-            section.style.display = 'none';
-          }
+          section.style.display = (filter === 'all' || section.getAttribute('data-category') === filter) ? 'block' : 'none';
         });
       });
     });
     
-    // Smooth scrolling for navigation links
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
     
-    // Add scroll effect to header
-    let lastScrollTop = 0;
-    const header = document.querySelector('.site-header');
-    
-    window.addEventListener('scroll', function() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      if (scrollTop > lastScrollTop && scrollTop > 100) {
-        // Scrolling down
-        header.classList.add('header-hidden');
-      } else {
-        // Scrolling up
-        header.classList.remove('header-hidden');
-      }
-      
-      lastScrollTop = scrollTop;
-    });
-    
-    // Add intersection observer for animations
+    // Scroll-triggered animations
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -685,11 +654,11 @@
       });
     }, observerOptions);
     
-    // Observe sections for animation
-    document.querySelectorAll('section').forEach(section => {
+    // Observe all sections for animation
+    document.querySelectorAll('.content section').forEach(section => {
       observer.observe(section);
     });
-  });
+  })();
 </script>
 </body>
 </html>
