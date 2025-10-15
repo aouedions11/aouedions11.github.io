@@ -1,48 +1,61 @@
 <!DOCTYPE html>
-
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-  <title> Ons Aouedi - Presentation </title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Talks & Videos — Ons Aouedi</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+<header class="site-header">
+  <div class="brand">
+    <h1>Talks & Videos</h1>
+    <p class="tagline"><a href="index.html">← Back to profile</a></p>
+  </div>
+</header>
 
-<div class="relative">
-<br>
-<h2 id="fluids"> 1. FLUIDS: Federated Learning with semi-supervised approach for Intrusion Detection System </h2>
-  <video width="700" height="400" controls>
-  <source src="CCNC.mp4" type="video/mp4">
-  </video>
-
-<br><br>
-
-  <h2 id="icc"> 2. Performance evaluation of feature selection and tree-based algorithms for traffic classification </h2>
-    <video width="700" height="400" controls>
-    <source src="ICC.mp4" type="video/mp4">
-    </video>
-<br><br>
-    <h2 id="incp"> 3. A Semi-supervised Stacked Autoencoder Approach for Network Traffic Classification </h2>
-      <video width="700" height="400" controls>
-      <source src="icnp.mp4" type="video/mp4">
+<main class="container">
+  <div class="content" style="grid-column: 1 / -1;">
+    <section id="fluids">
+      <h2>1. FLUIDS: Federated Learning with Semi-Supervised Approach for Intrusion Detection</h2>
+      <video width="100%" controls preload="metadata">
+        <source src="CCNC.mp4" type="video/mp4" />
       </video>
+    </section>
 
-<br><br>
-    <h2 id="icc_conf"> 4. Intrusion detection for softwarized networks with semi-supervised federated learning
- </h2>
-      <video width="700" height="400" controls>
-      <source src="ICC_FL_IDS.mp4" type="video/mp4">
+    <section id="icc" style="margin-top:2rem">
+      <h2>2. Performance Evaluation of Feature Selection and Tree-Based Algorithms for Traffic Classification</h2>
+      <video width="100%" controls preload="metadata">
+        <source src="ICC.mp4" type="video/mp4" />
       </video>
+    </section>
 
-<br><br>
-    <h2 id="noms"> 5. Decision tree-based blending method using deep-learning for network management </h2>
-      <video width="700" height="400" controls>
-      <source src="NOMS.mp4" type="video/mp4">
+    <section id="icnp" style="margin-top:2rem">
+      <h2>3. A Semi-Supervised Stacked Autoencoder for Network Traffic Classification</h2>
+      <video width="100%" controls preload="metadata">
+        <source src="icnp.mp4" type="video/mp4" />
       </video>
+    </section>
 
-</div>
+    <section id="icc_conf" style="margin-top:2rem">
+      <h2>4. Intrusion Detection for Softwarized Networks with Semi-Supervised Federated Learning</h2>
+      <video width="100%" controls preload="metadata">
+        <source src="ICC.mp4" type="video/mp4" />
+      </video>
+    </section>
 
+    <section id="noms" style="margin-top:2rem">
+      <h2>5. Decision Tree-Based Blending Method Using Deep Learning for Network Management</h2>
+      <video width="100%" controls preload="metadata">
+        <source src="NOMS.mp4" type="video/mp4" />
+      </video>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <small>© <span id="y"></span> Ons Aouedi</small>
+</footer>
+<script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
