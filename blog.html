@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — Dr. Ons Aouedi</title>
+  <meta name="description" content="Research insights and articles on Federated Learning, Machine Learning, and AI by Dr. Ons Aouedi." />
+  <meta name="theme-color" content="#047857" />
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R3BGV1BGYG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R3BGV1BGYG');
+    
+    function trackArticleView(articleId, articleTitle) {
+      gtag('event', 'article_view', {
+        'article_id': articleId,
+        'article_title': articleTitle,
+        'page_location': window.location.href + '#' + articleId
+      });
+    }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="icon" type="image/png" href="img_profile.png" />
+  <style>
+    .blog-header {
+      text-align: center;
+      padding: 3rem 2rem 2.5rem;
+      background: var(--gradient-card);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    
+    .blog-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-serif);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    
+    .blog-header .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .blog-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    
+    .blog-grid {
+      display: grid;
+      gap: 2rem;
+    }
+    
+    .blog-post {
+      background: var(--gradient-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    
+    .blog-post.with-image {
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+    }
+    
+    .blog-post:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+      border-color: var(--primary);
+    }
+    
+    .post-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: var(--bg-secondary);
+    }
+    
+    .blog-post.featured {
+      border: 2px solid var(--primary);
+      background: linear-gradient(145deg, var(--bg-card) 0%, var(--primary-glow) 100%);
+    }
+    
+    .blog-post.featured::before {
+      content: '⭐ Featured Post';
+      display: block;
+      background: var(--gradient-accent);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    
+    .post-content {
+      padding: 2rem;
+    }
+    
+    .post-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    
+    .post-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: 50px;
+    }
+    
+    .post-meta .post-date {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .post-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.35;
+      font-family: var(--font-serif);
+      font-weight: 600;
+    }
+    
+    .post-title a {
+      color: var(--text);
+      transition: color 0.2s ease;
+      text-decoration: none;
+    }
+    
+    .post-title a:hover {
+      color: var(--primary);
+    }
+    
+    .post-excerpt {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .post-tag {
+      padding: 0.3rem 0.75rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .post-tag:nth-child(2) { background: #6366f1; }
+    .post-tag:nth-child(3) { background: #8b5cf6; }
+    
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--gradient-accent);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+    }
+    
+    .read-more:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+      color: white;
+    }
+    
+    /* Full Blog Post View */
+    .blog-article {
+      background: var(--gradient-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 3rem;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .blog-article h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .blog-article h2 {
+      font-size: 1.4rem;
+      margin-top: 2.5rem;
+    }
+    
+    .blog-article h3 {
+      font-size: 1.15rem;
+      margin-top: 2rem;
+    }
+    
+    .blog-article p {
+      margin-bottom: 1.25rem;
+      line-height: 1.8;
+    }
+    
+    .blog-article ul, .blog-article ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    
+    .blog-article li {
+      margin-bottom: 0.75rem;
+      line-height: 1.7;
+    }
+    
+    .blog-article code {
+      background: var(--bg-tertiary);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+    }
+    
+    .blog-article pre {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 1.5rem;
+    }
+    
+    .blog-article pre code {
+      background: none;
+      padding: 0;
+    }
+    
+    .blog-article blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+    
+    .blog-article img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      margin: 1.5rem 0;
+    }
+    
+    .article-featured-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin: 1.5rem 0 2rem;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .back-to-blog {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+    
+    .back-to-blog:hover {
+      color: var(--primary-dark);
+    }
+    
+    .article-footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .author-card {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius);
+    }
+    
+    .author-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+      margin: 0;
+    }
+    
+    .author-info h4 {
+      margin: 0 0 0.25rem;
+      font-size: 1.1rem;
+    }
+    
+    .author-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    
+    .post-type {
+      background: var(--accent);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .paper-reference {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .paper-reference h4 {
+      margin: 0 0 1rem;
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .paper-reference .paper-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+    
+    .paper-reference .paper-authors {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .paper-reference .paper-venue {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    
+    .paper-reference .paper-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    
+    .paper-reference .paper-link:hover {
+      background: var(--accent-dark);
+      transform: translateX(4px);
+      color: white;
+    }
+    
+    .key-takeaways {
+      background: linear-gradient(145deg, var(--bg-card) 0%, var(--primary-glow) 100%);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .key-takeaways h4 {
+      margin: 0 0 1rem;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    
+    .key-takeaways ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    
+    .key-takeaways li {
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+    
+    @media (max-width: 640px) {
+      .blog-header {
+        padding: 2rem 1rem;
+      }
+      
+      .blog-header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .blog-container {
+        padding: 0 1rem 3rem;
+      }
+      
+      .blog-post.with-image {
+        grid-template-columns: 1fr;
+      }
+      
+      .post-image {
+        max-height: 200px;
+      }
+      
+      .post-content {
+        padding: 1.5rem;
+      }
+      
+      .post-title {
+        font-size: 1.25rem;
+      }
+      
+      .blog-article {
+        padding: 1.5rem;
+      }
+      
+      .author-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .tagline a:hover {
+        background: var(--primary-dark) !important;
+        transform: translateX(-3px);
+        box-shadow: var(--shadow-md) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-content">
+    <div class="brand">
+      <h1>Research Blog</h1>
+      <p class="tagline">
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--primary); color: white; border-radius: 50px; font-weight: 600; transition: all 0.2s ease; text-decoration: none; box-shadow: var(--shadow-sm);">
+          ← Back to Profile
+        </a>
+      </p>
+    </div>
+    <div class="header-controls">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="blog-header">
+  <h1>Insights & Research</h1>
+  <p class="subtitle">Exploring the frontiers of Federated Learning, Machine Learning, and AI</p>
+  <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted); opacity: 0.8;">
+    Last updated: <span id="blog-update-date">January 2026</span>
+  </p>
+</div>
+
+<main class="blog-container">
+  
+  <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: var(--radius-lg); padding: 2rem 2.5rem; margin-bottom: 2rem; text-align: center; box-shadow: var(--shadow-lg);">
+    <p style="margin: 0; font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,0.95);">
+      <strong style="font-size: 1.3rem; display: block; margin-bottom: 0.75rem; color: white; font-weight: 700;">Open for Collaboration</strong>
+      Seeking research collaborations in Federated Learning, Machine Learning, Time Series Analysis, and IoT Security. 
+      Contact: <a href="mailto:ons.aouedi@uni.lu" style="color: white; font-weight: 700; text-decoration: none; border-bottom: 2px solid white; padding-bottom: 2px;">ons.aouedi@uni.lu</a>
+    </p>
+  </div>
+  
+  <div class="blog-grid">
+    
+    
+    
+    <article class="blog-post">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-date">January 7, 2026</span>
+          <span>⏱️ 6 min read</span>
+          <span class="post-type">📄 Paper Review</span>
+        </div>
+        <h2 class="post-title">
+          <a href="#paper-fedprox" onclick="showArticle('paper-fedprox')">Paper Review: FedProx - Tackling Heterogeneity in Federated Learning</a>
+        </h2>
+        <p class="post-excerpt">
+          This week I discuss FedProx, a landmark paper that addresses one of FL's biggest challenges: 
+          statistical and systems heterogeneity. The authors introduce a simple yet effective proximal term 
+          that significantly improves convergence in heterogeneous settings.
+        </p>
+        <div class="post-tags">
+          <span class="post-tag">FedProx</span>
+          <span class="post-tag">Heterogeneity</span>
+          <span class="post-tag">Non-IID</span>
+        </div>
+        <a href="#paper-fedprox" class="read-more" onclick="showArticle('paper-fedprox')">
+          Read Discussion →
+        </a>
+      </div>
+    </article>
+    
+    <article class="blog-post featured">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-date">January 6, 2026</span>
+          <span>⏱️ 8 min read</span>
+        </div>
+        <h2 class="post-title">
+          <a href="#fl-intro" onclick="showArticle('fl-intro')">Understanding Federated Learning: A Comprehensive Guide</a>
+        </h2>
+        <p class="post-excerpt">
+          Federated Learning is revolutionizing how we train machine learning models while preserving privacy. 
+          In this comprehensive guide, I explain the fundamentals, key challenges, and real-world applications 
+          of this groundbreaking technology that enables collaborative learning without sharing raw data.
+        </p>
+        <div class="post-tags">
+          <span class="post-tag">Federated Learning</span>
+          <span class="post-tag">Privacy</span>
+          <span class="post-tag">Machine Learning</span>
+        </div>
+        <a href="#fl-intro" class="read-more" onclick="showArticle('fl-intro')">
+          Read Article →
+        </a>
+      </div>
+    </article>
+    
+    <article class="blog-post">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-date">December 15, 2025</span>
+          <span>⏱️ 6 min read</span>
+        </div>
+        <h2 class="post-title">
+          <a href="#fl-challenges" onclick="showArticle('fl-challenges')">Key Challenges in Federated Learning and How to Address Them</a>
+        </h2>
+        <p class="post-excerpt">
+          While Federated Learning offers tremendous potential, it comes with unique challenges including 
+          non-IID data, communication efficiency, and security concerns. Let's explore these challenges 
+          and the cutting-edge solutions being developed to overcome them.
+        </p>
+        <div class="post-tags">
+          <span class="post-tag">Non-IID Data</span>
+          <span class="post-tag">Communication</span>
+          <span class="post-tag">Security</span>
+        </div>
+        <a href="#fl-challenges" class="read-more" onclick="showArticle('fl-challenges')">
+          Read Article →
+        </a>
+      </div>
+    </article>
+    
+    <article class="blog-post">
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-date">November 28, 2025</span>
+          <span>⏱️ 5 min read</span>
+        </div>
+        <h2 class="post-title">
+          <a href="#fl-iot" onclick="showArticle('fl-iot')">Federated Learning for IoT: Enabling Smart Edge Intelligence</a>
+        </h2>
+        <p class="post-excerpt">
+          The Internet of Things generates massive amounts of data at the edge. Federated Learning 
+          provides an elegant solution for training models on IoT devices while keeping sensitive 
+          data local. Discover how FL is transforming smart homes, healthcare, and industrial IoT.
+        </p>
+        <div class="post-tags">
+          <span class="post-tag">IoT</span>
+          <span class="post-tag">Edge Computing</span>
+          <span class="post-tag">Smart Devices</span>
+        </div>
+        <a href="#fl-iot" class="read-more" onclick="showArticle('fl-iot')">
+          Read Article →
+        </a>
+      </div>
+    </article>
+
+  </div>
+  
+  <article id="paper-fedprox" class="blog-article" style="display: none;">
+    <a href="#" class="back-to-blog" onclick="hideArticle()">← Back to all posts</a>
+    
+    <div class="post-meta">
+      <span class="post-date">January 7, 2026</span>
+      <span>⏱️ 6 min read</span>
+      <span class="post-type">📄 Paper Review</span>
+    </div>
+    
+    <h1>Paper Review: FedProx - Tackling Heterogeneity in Federated Learning</h1>
+    
+    <div class="post-tags" style="margin-bottom: 2rem;">
+      <span class="post-tag">FedProx</span>
+      <span class="post-tag">Heterogeneity</span>
+      <span class="post-tag">Non-IID</span>
+    </div>
+    
+    <div class="paper-reference">
+      <h4>📄 Paper Reference</h4>
+      <p class="paper-title">"Federated Optimization in Heterogeneous Networks"</p>
+      <p class="paper-authors">Tian Li, Anit Kumar Sahu, Manzil Zaheer, Maziar Sanjabi, Ameet Talwalkar, Virginia Smith</p>
+      <p class="paper-venue">MLSys 2020</p>
+      <a href="https://arxiv.org/abs/1812.06127" target="_blank" class="paper-link">Read Original Paper →</a>
+    </div>
+    
+    <h2>Why This Paper Matters</h2>
+    <p>
+      FedProx is one of the most influential papers in Federated Learning research. It directly addresses 
+      the critical challenge of <strong>heterogeneity</strong> — both in terms of data distribution (statistical heterogeneity) 
+      and device capabilities (systems heterogeneity). While the original FedAvg algorithm assumes relatively 
+      homogeneous settings, real-world FL deployments rarely meet this assumption.
+    </p>
+    
+    <h2>Key Contributions</h2>
+    <ul>
+      <li><strong>Proximal Term:</strong> Introduces a simple modification to local training that limits how far local models can deviate from the global model.</li>
+      <li><strong>Theoretical Analysis:</strong> Provides convergence guarantees under heterogeneous settings where FedAvg may diverge.</li>
+      <li><strong>Partial Work Tolerance:</strong> Gracefully handles "stragglers" — devices that cannot complete full local training.</li>
+      <li><strong>Practical Simplicity:</strong> Requires minimal changes to existing FedAvg implementations.</li>
+    </ul>
+    
+    <h2>How FedProx Works</h2>
+    <p>
+      The core idea is elegantly simple. Instead of minimizing just the local loss function, each client minimizes:
+    </p>
+    
+    <blockquote>
+      h(w; w<sup>t</sup>) = F(w) + (μ/2)||w - w<sup>t</sup>||²
+    </blockquote>
+    
+    <p>
+      Where <code>F(w)</code> is the local loss, <code>w<sup>t</sup></code> is the current global model, and <code>μ</code> is 
+      a hyperparameter controlling the strength of the proximal term. This addition acts as a "leash" that prevents 
+      local models from drifting too far from the global consensus.
+    </p>
+    
+    <h2>Results & Key Findings</h2>
+    <p>
+      The experiments demonstrate that FedProx:
+    </p>
+    <ul>
+      <li>Achieves <strong>more stable and faster convergence</strong> compared to FedAvg on heterogeneous data</li>
+      <li>Shows <strong>22% improvement</strong> in test accuracy on highly non-IID settings</li>
+      <li>Maintains robustness even when up to 90% of devices are stragglers</li>
+      <li>Works consistently across different datasets (MNIST, FEMNIST, Shakespeare, Sent140)</li>
+    </ul>
+    
+    <h2>My Thoughts</h2>
+    <p>
+      What I appreciate most about FedProx is its <strong>practical elegance</strong>. The solution is theoretically 
+      motivated but implementation-friendly — you essentially add one line of code to FedAvg. This has made 
+      it highly adoptable in both research and industry.
+    </p>
+    
+    <h3>Strengths</h3>
+    <ul>
+      <li>Simple yet effective — easy to implement and understand</li>
+      <li>Strong theoretical foundation with convergence guarantees</li>
+      <li>Addresses both statistical AND systems heterogeneity</li>
+      <li>Backward compatible with FedAvg (set μ=0)</li>
+    </ul>
+    
+    <h3>Limitations & Future Directions</h3>
+    <ul>
+      <li><strong>Hyperparameter sensitivity:</strong> The μ parameter requires tuning, though the paper provides good heuristics</li>
+      <li><strong>Uniform regularization:</strong> All clients use the same μ, but adaptive per-client values could be better</li>
+      <li><strong>Extension to personalization:</strong> FedProx was later extended to personalized FL variants like Ditto</li>
+    </ul>
+    
+    <div class="key-takeaways">
+      <h4>💡 Key Takeaways</h4>
+      <ul>
+        <li>Heterogeneity is a fundamental challenge in FL — don't assume IID data!</li>
+        <li>Simple solutions often work best: a proximal term significantly improves stability</li>
+        <li>Consider both data AND system heterogeneity in your FL designs</li>
+        <li>FedProx is a strong baseline for any FL research in heterogeneous settings</li>
+      </ul>
+    </div>
+    
+    <h2>Conclusion</h2>
+    <p>
+      FedProx remains a foundational paper that every FL researcher should understand. Its approach of 
+      limiting local model drift through a proximal term has influenced numerous subsequent works. 
+      If you're implementing FL in a real-world setting with diverse devices and data distributions, 
+      FedProx should be in your toolkit.
+    </p>
+    <p>
+      <strong>Next week:</strong> I'll review SCAFFOLD, another influential paper that tackles heterogeneity 
+      through variance reduction techniques. Stay tuned!
+    </p>
+    
+    <div class="article-footer">
+      <div class="author-card">
+        <img src="img_profile.png" alt="Dr. Ons Aouedi" />
+        <div class="author-info">
+          <h4>Dr. Ons Aouedi</h4>
+          <p>Research Associate at SnT, University of Luxembourg. Specializing in Federated Learning, Machine Learning, and IoT Security.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <article id="fl-intro" class="blog-article" style="display: none;">
+    <a href="#" class="back-to-blog" onclick="hideArticle()">← Back to all posts</a>
+    
+    <div class="post-meta">
+      <span class="post-date">January 6, 2026</span>
+      <span>⏱️ 8 min read</span>
+    </div>
+    
+    <h1>Understanding Federated Learning: A Comprehensive Guide</h1>
+    
+    <div class="post-tags" style="margin-bottom: 2rem;">
+      <span class="post-tag">Federated Learning</span>
+      <span class="post-tag">Privacy</span>
+      <span class="post-tag">Machine Learning</span>
+    </div>
+    
+    <p>
+      In the era of big data and artificial intelligence, the traditional approach to machine learning involves 
+      centralizing data in a single location for model training. However, this approach raises significant 
+      privacy concerns and becomes impractical when dealing with sensitive or distributed data. 
+      <strong>Federated Learning (FL)</strong> emerges as a revolutionary paradigm that addresses these challenges.
+    </p>
+    
+    <h2>What is Federated Learning?</h2>
+    
+    <p>
+      Federated Learning, first introduced by Google in 2016, is a machine learning approach that trains 
+      algorithms across multiple decentralized devices or servers holding local data samples, without 
+      exchanging the raw data itself. Instead of moving data to the model, FL brings the model to the data.
+    </p>
+    
+    <blockquote>
+      "Federated Learning enables model training on decentralized data while maintaining privacy — 
+      the data never leaves its original location."
+    </blockquote>
+    
+    <h2>How Does Federated Learning Work?</h2>
+    
+    <p>The typical FL process follows these steps:</p>
+    
+    <ol>
+      <li><strong>Initialization:</strong> A central server initializes the global model and distributes it to participating clients.</li>
+      <li><strong>Local Training:</strong> Each client trains the model on their local data for several epochs.</li>
+      <li><strong>Model Updates:</strong> Clients send only their model updates (gradients or weights) back to the server.</li>
+      <li><strong>Aggregation:</strong> The server aggregates all updates using algorithms like FedAvg to create an improved global model.</li>
+      <li><strong>Iteration:</strong> The process repeats until the model converges.</li>
+    </ol>
+    
+    <h2>Key Advantages of Federated Learning</h2>
+    
+    <h3>1. Privacy Preservation</h3>
+    <p>
+      Raw data never leaves the client device, significantly reducing privacy risks. This is crucial for 
+      sensitive domains like healthcare, finance, and personal devices.
+    </p>
+    
+    <h3>2. Reduced Communication Costs</h3>
+    <p>
+      Transmitting model parameters is typically more efficient than transferring large datasets, 
+      especially in bandwidth-constrained environments.
+    </p>
+    
+    <h3>3. Regulatory Compliance</h3>
+    <p>
+      FL helps organizations comply with data protection regulations like GDPR by keeping data localized 
+      and minimizing data movement.
+    </p>
+    
+    <h3>4. Leveraging Edge Data</h3>
+    <p>
+      FL enables learning from data that would otherwise be inaccessible due to privacy, legal, or 
+      practical constraints.
+    </p>
+    
+    <h2>Real-World Applications</h2>
+    
+    <ul>
+      <li><strong>Mobile Keyboard Prediction:</strong> Google's Gboard uses FL to improve next-word prediction without accessing users' typing data.</li>
+      <li><strong>Healthcare:</strong> Hospitals can collaboratively train diagnostic models without sharing patient records.</li>
+      <li><strong>Financial Services:</strong> Banks can detect fraud patterns across institutions while maintaining customer privacy.</li>
+      <li><strong>Autonomous Vehicles:</strong> Car manufacturers can improve driving models using data from vehicles worldwide.</li>
+      <li><strong>Smart Home Devices:</strong> IoT devices can personalize experiences while keeping user data on-device.</li>
+    </ul>
+    
+    <h2>Conclusion</h2>
+    
+    <p>
+      Federated Learning represents a fundamental shift in how we approach machine learning in a 
+      privacy-conscious world. As data privacy regulations tighten and edge devices become more powerful, 
+      FL is poised to become the standard approach for many AI applications. In my upcoming posts, 
+      I'll dive deeper into the technical challenges and cutting-edge solutions in this exciting field.
+    </p>
+    
+    <div class="article-footer">
+      <div class="author-card">
+        <img src="img_profile.png" alt="Dr. Ons Aouedi" />
+        <div class="author-info">
+          <h4>Dr. Ons Aouedi</h4>
+          <p>Research Associate at SnT, University of Luxembourg. Specializing in Federated Learning, Machine Learning, and IoT Security.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <article id="fl-challenges" class="blog-article" style="display: none;">
+    <a href="#" class="back-to-blog" onclick="hideArticle()">← Back to all posts</a>
+    
+    <div class="post-meta">
+      <span class="post-date">December 15, 2025</span>
+      <span>⏱️ 6 min read</span>
+    </div>
+    
+    <h1>Key Challenges in Federated Learning and How to Address Them</h1>
+    
+    <div class="post-tags" style="margin-bottom: 2rem;">
+      <span class="post-tag">Non-IID Data</span>
+      <span class="post-tag">Communication</span>
+      <span class="post-tag">Security</span>
+    </div>
+    
+    <p>
+      While Federated Learning opens exciting possibilities for privacy-preserving machine learning, 
+      it introduces unique challenges that don't exist in traditional centralized learning. Understanding 
+      these challenges is crucial for successfully deploying FL systems in practice.
+    </p>
+    
+    <h2>Challenge 1: Non-IID (Non-Identically Distributed) Data</h2>
+    
+    <p>
+      In real-world scenarios, data across clients is rarely independent and identically distributed (IID). 
+      Each device or organization has its own data patterns, leading to statistical heterogeneity.
+    </p>
+    
+    <h3>Solutions:</h3>
+    <ul>
+      <li><strong>FedProx:</strong> Adds a proximal term to limit how far local models can deviate from the global model.</li>
+      <li><strong>SCAFFOLD:</strong> Uses control variates to correct for client drift.</li>
+      <li><strong>Personalization:</strong> Train personalized models that adapt to local data distributions.</li>
+    </ul>
+    
+    <h2>Challenge 2: Communication Efficiency</h2>
+    
+    <p>
+      Frequent model updates between clients and server can be bandwidth-intensive, especially with 
+      large models and many participants.
+    </p>
+    
+    <h3>Solutions:</h3>
+    <ul>
+      <li><strong>Gradient Compression:</strong> Reduce the size of transmitted updates using quantization or sparsification.</li>
+      <li><strong>Federated Averaging:</strong> Increase local training epochs to reduce communication rounds.</li>
+      <li><strong>Hierarchical FL:</strong> Use edge servers for intermediate aggregation.</li>
+    </ul>
+    
+    <h2>Challenge 3: Security and Privacy Attacks</h2>
+    
+    <p>
+      Despite not sharing raw data, FL can still be vulnerable to attacks like gradient inversion, 
+      membership inference, and model poisoning.
+    </p>
+    
+    <h3>Solutions:</h3>
+    <ul>
+      <li><strong>Differential Privacy:</strong> Add calibrated noise to gradients before sharing.</li>
+      <li><strong>Secure Aggregation:</strong> Use cryptographic protocols to aggregate updates without revealing individual contributions.</li>
+      <li><strong>Byzantine-Robust Aggregation:</strong> Detect and exclude malicious updates.</li>
+    </ul>
+    
+    <h2>Challenge 4: System Heterogeneity</h2>
+    
+    <p>
+      Clients have varying computational capabilities, memory, and network conditions, leading to 
+      stragglers that slow down training.
+    </p>
+    
+    <h3>Solutions:</h3>
+    <ul>
+      <li><strong>Asynchronous FL:</strong> Allow clients to contribute updates at their own pace.</li>
+      <li><strong>Client Selection:</strong> Strategically choose participants based on their capabilities.</li>
+      <li><strong>Model Pruning:</strong> Assign lighter models to resource-constrained devices.</li>
+    </ul>
+    
+    <h2>Conclusion</h2>
+    
+    <p>
+      These challenges are active areas of research, and significant progress is being made. 
+      My own work focuses on developing semi-supervised and hierarchical approaches to address 
+      data heterogeneity and communication efficiency. Stay tuned for more detailed posts on specific solutions!
+    </p>
+    
+    <div class="article-footer">
+      <div class="author-card">
+        <img src="img_profile.png" alt="Dr. Ons Aouedi" />
+        <div class="author-info">
+          <h4>Dr. Ons Aouedi</h4>
+          <p>Research Associate at SnT, University of Luxembourg. Specializing in Federated Learning, Machine Learning, and IoT Security.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  <article id="fl-iot" class="blog-article" style="display: none;">
+    <a href="#" class="back-to-blog" onclick="hideArticle()">← Back to all posts</a>
+    
+    <div class="post-meta">
+      <span class="post-date">November 28, 2025</span>
+      <span>⏱️ 5 min read</span>
+    </div>
+    
+    <h1>Federated Learning for IoT: Enabling Smart Edge Intelligence</h1>
+    
+    <div class="post-tags" style="margin-bottom: 2rem;">
+      <span class="post-tag">IoT</span>
+      <span class="post-tag">Edge Computing</span>
+      <span class="post-tag">Smart Devices</span>
+    </div>
+    
+    <p>
+      The Internet of Things (IoT) is generating unprecedented amounts of data at the network edge. 
+      From smart homes to industrial sensors, billions of devices are collecting valuable information. 
+      Federated Learning provides the perfect framework for leveraging this data while respecting privacy 
+      and bandwidth constraints.
+    </p>
+    
+    <h2>Why Federated Learning for IoT?</h2>
+    
+    <p>Traditional cloud-based ML approaches face several issues in IoT environments:</p>
+    
+    <ul>
+      <li><strong>Bandwidth limitations:</strong> Uploading all IoT data to the cloud is impractical.</li>
+      <li><strong>Latency requirements:</strong> Many IoT applications need real-time responses.</li>
+      <li><strong>Privacy concerns:</strong> Users are increasingly wary of sharing personal data.</li>
+      <li><strong>Energy constraints:</strong> Battery-powered devices can't afford constant data transmission.</li>
+    </ul>
+    
+    <h2>Applications in Different IoT Domains</h2>
+    
+    <h3>Smart Healthcare</h3>
+    <p>
+      Wearable devices and medical sensors can collaboratively train models for health monitoring, 
+      disease prediction, and personalized treatment — all while keeping sensitive health data on-device.
+    </p>
+    
+    <h3>Smart Home</h3>
+    <p>
+      Voice assistants, smart thermostats, and security cameras can improve their intelligence 
+      through FL, learning from usage patterns without exposing private home activities.
+    </p>
+    
+    <h3>Industrial IoT (IIoT)</h3>
+    <p>
+      Manufacturing facilities can train predictive maintenance models across multiple factories, 
+      detecting equipment failures before they occur while protecting proprietary operational data.
+    </p>
+    
+    <h3>Smart Transportation</h3>
+    <p>
+      Connected vehicles can share learning about road conditions, traffic patterns, and driving 
+      behaviors without compromising driver privacy or revealing competitive information.
+    </p>
+    
+    <h2>Technical Considerations for IoT FL</h2>
+    
+    <ul>
+      <li><strong>Resource-Efficient Models:</strong> Use lightweight architectures like MobileNets or model compression techniques.</li>
+      <li><strong>Hierarchical Architectures:</strong> Employ edge servers for intermediate aggregation to reduce communication with the cloud.</li>
+      <li><strong>Asynchronous Training:</strong> Handle device availability and connectivity variations gracefully.</li>
+      <li><strong>Energy-Aware Scheduling:</strong> Train during charging or when energy is abundant.</li>
+    </ul>
+    
+    <h2>Conclusion</h2>
+    
+    <p>
+      The combination of Federated Learning and IoT represents a powerful paradigm for the future of 
+      intelligent edge computing. As IoT devices become more capable and FL algorithms more efficient, 
+      we'll see increasingly sophisticated applications that respect user privacy while delivering 
+      personalized, intelligent experiences.
+    </p>
+    
+    <div class="article-footer">
+      <div class="author-card">
+        <img src="img_profile.png" alt="Dr. Ons Aouedi" />
+        <div class="author-info">
+          <h4>Dr. Ons Aouedi</h4>
+          <p>Research Associate at SnT, University of Luxembourg. Specializing in Federated Learning, Machine Learning, and IoT Security.</p>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+</main>
+
+<footer class="site-footer">
+  <small>© <span id="y"></span> Ons Aouedi • Research Blog</small>
+</footer>
+
+<script>
+  (function() {
+    'use strict';
+    
+    const now = new Date();
+    document.getElementById('y').textContent = now.getFullYear();
+    
+    const monthYear = now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const blogUpdateEl = document.getElementById('blog-update-date');
+    if (blogUpdateEl) {
+      blogUpdateEl.textContent = monthYear;
+    }
+    
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
+    
+    themeToggle.addEventListener('click', function() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
+    });
+  })();
+  
+  function showArticle(id) {
+    event.preventDefault();
+    document.querySelector('.blog-grid').style.display = 'none';
+    const article = document.getElementById(id);
+    article.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    const title = article.querySelector('h1') ? article.querySelector('h1').textContent : id;
+    if (typeof trackArticleView === 'function') {
+      trackArticleView(id, title);
+    }
+  }
+  
+  function hideArticle() {
+    event.preventDefault();
+    document.querySelectorAll('.blog-article').forEach(function(article) {
+      article.style.display = 'none';
+    });
+    document.querySelector('.blog-grid').style.display = 'grid';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  if (window.location.hash) {
+    const articleId = window.location.hash.substring(1);
+    const article = document.getElementById(articleId);
+    if (article && article.classList.contains('blog-article')) {
+      showArticle(articleId);
+    }
+  }
+  
+  function loadAdminPosts() {
+    const saved = localStorage.getItem('blog_posts');
+    if (!saved) return;
+    
+    try {
+      const posts = JSON.parse(saved);
+      const blogGrid = document.querySelector('.blog-grid');
+      
+      const postsHTML = posts.map(post => {
+        const imageHTML = post.image ? `<img src="${post.image}" alt="${post.title}" class="post-image" />` : '';
+        const postTypeHTML = post.type === 'paper-review' ? '<span class="post-type">📄 Paper Review</span>' : '';
+        
+        return `
+          <article class="blog-post ${post.featured ? 'featured' : ''} ${post.image ? 'with-image' : ''}">
+            ${imageHTML}
+            <div class="post-content">
+              <div class="post-meta">
+                <span class="post-date">${post.date}</span>
+                <span>⏱️ ${post.readTime}</span>
+                ${postTypeHTML}
+              </div>
+              <h2 class="post-title">
+                <a href="#${post.id}" onclick="showDynamicArticle('${post.id}')">${post.title}</a>
+              </h2>
+              <p class="post-excerpt">${post.excerpt}</p>
+              <div class="post-tags">
+                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+              </div>
+              <a href="#${post.id}" class="read-more" onclick="showDynamicArticle('${post.id}')">
+                Read ${post.type === 'paper-review' ? 'Discussion' : 'Article'} →
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+      
+      const commentBlock = blogGrid.querySelector('article');
+      if (commentBlock) {
+        blogGrid.insertAdjacentHTML('afterbegin', postsHTML);
+      }
+      
+    } catch (e) {
+      console.error('Error loading posts:', e);
+    }
+  }
+  
+  function showDynamicArticle(id) {
+    event.preventDefault();
+    const saved = localStorage.getItem('blog_posts');
+    if (!saved) return;
+    
+    try {
+      const posts = JSON.parse(saved);
+      const post = posts.find(p => p.id === id);
+      if (!post) return;
+      
+      document.querySelector('.blog-grid').style.display = 'none';
+      
+      const dynamicContainer = document.getElementById('dynamic-articles');
+      if (!dynamicContainer) {
+        const container = document.createElement('div');
+        container.id = 'dynamic-articles';
+        document.querySelector('.blog-container').appendChild(container);
+      }
+      
+      const articleHTML = generateArticleHTML(post);
+      document.getElementById('dynamic-articles').innerHTML = articleHTML;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      if (typeof trackArticleView === 'function') {
+        trackArticleView(post.id, post.title);
+      }
+    } catch (e) {
+      console.error('Error showing article:', e);
+    }
+  }
+  
+  function generateArticleHTML(post) {
+    const imageHTML = post.image ? `<img src="${post.image}" alt="${post.title}" class="article-featured-image" />` : '';
+    const paperHTML = post.paper ? `
+      <div class="paper-reference">
+        <h4>📄 Paper Reference</h4>
+        <p class="paper-title">"${post.paper.title}"</p>
+        ${post.paper.authors ? `<p class="paper-authors">${post.paper.authors}</p>` : ''}
+        ${post.paper.venue ? `<p class="paper-venue">${post.paper.venue}</p>` : ''}
+        ${post.paper.link ? `<a href="${post.paper.link}" target="_blank" class="paper-link">Read Original Paper →</a>` : ''}
+      </div>
+    ` : '';
+    
+    const postTypeHTML = post.type === 'paper-review' ? '<span class="post-type">📄 Paper Review</span>' : '';
+    
+    return `
+      <article class="blog-article">
+        <a href="#" class="back-to-blog" onclick="hideDynamicArticle()">← Back to all posts</a>
+        
+        <div class="post-meta">
+          <span class="post-date">${post.date}</span>
+          <span>⏱️ ${post.readTime}</span>
+          ${postTypeHTML}
+        </div>
+        
+        <h1>${post.title}</h1>
+        
+        <div class="post-tags" style="margin-bottom: 2rem;">
+          ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+        </div>
+        
+        ${imageHTML}
+        ${paperHTML}
+        
+        ${post.content.whyMatters ? `
+          <h2>Why This ${post.type === 'paper-review' ? 'Paper' : 'Topic'} Matters</h2>
+          <p>${post.content.whyMatters}</p>
+        ` : ''}
+        
+        ${post.content.contributions && post.content.contributions.length > 0 ? `
+          <h2>Key Contributions</h2>
+          <ul>
+            ${post.content.contributions.map(c => typeof c === 'string' ? `<li>${c}</li>` : `<li><strong>${c.title}:</strong> ${c.desc}</li>`).join('')}
+          </ul>
+        ` : ''}
+        
+        ${post.content.howItWorks ? `
+          <h2>How It Works</h2>
+          <p>${post.content.howItWorks}</p>
+        ` : ''}
+        
+        ${post.content.results && post.content.results.length > 0 ? `
+          <h2>Results & Findings</h2>
+          <ul>
+            ${post.content.results.map(r => `<li>${r}</li>`).join('')}
+          </ul>
+        ` : ''}
+        
+        ${post.content.myThoughts ? `
+          <h2>My Thoughts</h2>
+          <p>${post.content.myThoughts}</p>
+        ` : ''}
+        
+        ${post.content.strengths && post.content.strengths.length > 0 ? `
+          <h3>Strengths</h3>
+          <ul>
+            ${post.content.strengths.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+        ` : ''}
+        
+        ${post.content.limitations && post.content.limitations.length > 0 ? `
+          <h3>Limitations & Future Directions</h3>
+          <ul>
+            ${post.content.limitations.map(l => `<li>${l}</li>`).join('')}
+          </ul>
+        ` : ''}
+        
+        ${post.content.keyTakeaways && post.content.keyTakeaways.length > 0 ? `
+          <div class="key-takeaways">
+            <h4>💡 Key Takeaways</h4>
+            <ul>
+              ${post.content.keyTakeaways.map(t => `<li>${t}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+        
+        ${post.content.conclusion ? `
+          <h2>Conclusion</h2>
+          <p>${post.content.conclusion}</p>
+        ` : ''}
+        
+        <div class="article-footer">
+          <div class="author-card">
+            <img src="img_profile.png" alt="Dr. Ons Aouedi" />
+            <div class="author-info">
+              <h4>Dr. Ons Aouedi</h4>
+              <p>Research Associate at SnT, University of Luxembourg. Specializing in Federated Learning, Machine Learning, and IoT Security.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+  
+  function hideDynamicArticle() {
+    event.preventDefault();
+    const dynamicContainer = document.getElementById('dynamic-articles');
+    if (dynamicContainer) {
+      dynamicContainer.innerHTML = '';
+    }
+    document.querySelector('.blog-grid').style.display = 'grid';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+  loadAdminPosts();
+</script>
+</body>
+</html>
+

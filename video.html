@@ -5,133 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Talks & Videos — Dr. Ons Aouedi</title>
   <meta name="description" content="Conference presentations and talks by Dr. Ons Aouedi on federated learning, network traffic analysis, and intrusion detection." />
-  <link rel="stylesheet" href="style.css?v=5" />
+  <meta name="theme-color" content="#047857" />
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R3BGV1BGYG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-R3BGV1BGYG');
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <link rel="stylesheet" href="style.css?v=10" />
   <link rel="icon" type="image/png" href="img_profile.png" />
-  <style>
-    /* Video page specific styles */
-    body {
-      background: var(--bg);
-      color: var(--text);
-    }
-    
-    .video-page-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-    
-    .video-section {
-      background: var(--bg-secondary);
-      border-radius: var(--radius);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      border: 1px solid var(--border);
-    }
-    
-    .video-section h2 {
-      color: var(--text);
-      font-size: 1.35rem;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 0.5rem;
-    }
-    
-    .video-info {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-      padding: 0.75rem;
-      background: var(--bg);
-      border-radius: var(--radius);
-      border-left: 3px solid var(--primary);
-    }
-    
-    .video-container {
-      position: relative;
-      width: 100%;
-      background: #000;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-    }
-    
-    .video-container video {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 600px;
-    }
-    
-    .error-message {
-      padding: 1.5rem;
-      background: #fef2f2;
-      color: #991b1b;
-      border-radius: var(--radius);
-      margin-top: 1rem;
-      border: 1px solid #fca5a5;
-    }
-    
-    [data-theme="dark"] .error-message {
-      background: #7f1d1d;
-      color: #fecaca;
-      border-color: #991b1b;
-    }
-    
-    .error-message p {
-      margin-bottom: 0.5rem;
-    }
-    
-    .error-message strong {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
-    }
-    
-    .error-message ul {
-      margin: 0.5rem 0 0 1.5rem;
-    }
-    
-    .error-message li {
-      margin-bottom: 0.25rem;
-    }
-    
-    .error-message a {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-    
-    .award-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
-      color: white;
-      padding: 0.35rem 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-left: 0.5rem;
-    }
-    
-    @media (max-width: 640px) {
-      .video-page-container {
-        padding: 1rem;
-      }
-      
-      .video-section {
-        padding: 1.25rem;
-      }
-      
-      .video-section h2 {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
 </head>
 <body>
 <header class="site-header">
   <div class="header-content">
     <div class="brand">
       <h1>Talks & Videos</h1>
-      <p class="tagline"><a href="index.html">← Back to profile</a></p>
+      <p class="tagline"><a href="index.html">← Back to Dr. Ons Aouedi's Profile</a></p>
+    </div>
+    <div class="header-controls">
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
     </div>
   </div>
 </header>
@@ -213,10 +113,23 @@
   (function() {
     'use strict';
     
-    // Update copyright year
     document.getElementById('y').textContent = new Date().getFullYear();
     
-    // Video error handling
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
+    
+    themeToggle.addEventListener('click', function() {
+      const theme = document.documentElement.getAttribute('data-theme');
+      const newTheme = theme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
+    });
+    
     const videos = document.querySelectorAll('video');
     
     videos.forEach(function(video) {
@@ -230,7 +143,6 @@
         }
       });
       
-      // Try to load the video
       video.load();
     });
   })();

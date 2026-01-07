@@ -1,0 +1,151 @@
+{
+  "posts": [
+    {
+      "id": "paper-fedprox",
+      "type": "paper-review",
+      "featured": false,
+      "date": "January 7, 2026",
+      "readTime": "6 min read",
+      "title": "Paper Review: FedProx - Tackling Heterogeneity in Federated Learning",
+      "excerpt": "This week I discuss FedProx, a landmark paper that addresses one of FL's biggest challenges: statistical and systems heterogeneity. The authors introduce a simple yet effective proximal term that significantly improves convergence in heterogeneous settings.",
+      "tags": ["FedProx", "Heterogeneity", "Non-IID"],
+      "paper": {
+        "title": "Federated Optimization in Heterogeneous Networks",
+        "authors": "Tian Li, Anit Kumar Sahu, Manzil Zaheer, Maziar Sanjabi, Ameet Talwalkar, Virginia Smith",
+        "venue": "MLSys 2020",
+        "link": "https://arxiv.org/abs/1812.06127"
+      },
+      "content": {
+        "whyMatters": "FedProx is one of the most influential papers in Federated Learning research. It directly addresses the critical challenge of <strong>heterogeneity</strong> — both in terms of data distribution (statistical heterogeneity) and device capabilities (systems heterogeneity). While the original FedAvg algorithm assumes relatively homogeneous settings, real-world FL deployments rarely meet this assumption.",
+        "contributions": [
+          { "title": "Proximal Term", "desc": "Introduces a simple modification to local training that limits how far local models can deviate from the global model." },
+          { "title": "Theoretical Analysis", "desc": "Provides convergence guarantees under heterogeneous settings where FedAvg may diverge." },
+          { "title": "Partial Work Tolerance", "desc": "Gracefully handles 'stragglers' — devices that cannot complete full local training." },
+          { "title": "Practical Simplicity", "desc": "Requires minimal changes to existing FedAvg implementations." }
+        ],
+        "howItWorks": "The core idea is elegantly simple. Instead of minimizing just the local loss function, each client minimizes: h(w; wᵗ) = F(w) + (μ/2)||w - wᵗ||². Where F(w) is the local loss, wᵗ is the current global model, and μ is a hyperparameter controlling the strength of the proximal term.",
+        "results": [
+          "Achieves more stable and faster convergence compared to FedAvg on heterogeneous data",
+          "Shows 22% improvement in test accuracy on highly non-IID settings",
+          "Maintains robustness even when up to 90% of devices are stragglers",
+          "Works consistently across different datasets (MNIST, FEMNIST, Shakespeare, Sent140)"
+        ],
+        "myThoughts": "What I appreciate most about FedProx is its practical elegance. The solution is theoretically motivated but implementation-friendly — you essentially add one line of code to FedAvg. This has made it highly adoptable in both research and industry.",
+        "strengths": [
+          "Simple yet effective — easy to implement and understand",
+          "Strong theoretical foundation with convergence guarantees",
+          "Addresses both statistical AND systems heterogeneity",
+          "Backward compatible with FedAvg (set μ=0)"
+        ],
+        "limitations": [
+          "Hyperparameter sensitivity: The μ parameter requires tuning, though the paper provides good heuristics",
+          "Uniform regularization: All clients use the same μ, but adaptive per-client values could be better",
+          "Extension to personalization: FedProx was later extended to personalized FL variants like Ditto"
+        ],
+        "keyTakeaways": [
+          "Heterogeneity is a fundamental challenge in FL — don't assume IID data!",
+          "Simple solutions often work best: a proximal term significantly improves stability",
+          "Consider both data AND system heterogeneity in your FL designs",
+          "FedProx is a strong baseline for any FL research in heterogeneous settings"
+        ],
+        "conclusion": "FedProx remains a foundational paper that every FL researcher should understand. Its approach of limiting local model drift through a proximal term has influenced numerous subsequent works. If you're implementing FL in a real-world setting with diverse devices and data distributions, FedProx should be in your toolkit."
+      }
+    },
+    {
+      "id": "fl-intro",
+      "type": "article",
+      "featured": true,
+      "date": "January 6, 2026",
+      "readTime": "8 min read",
+      "title": "Understanding Federated Learning: A Comprehensive Guide",
+      "excerpt": "Federated Learning is revolutionizing how we train machine learning models while preserving privacy. In this comprehensive guide, I explain the fundamentals, key challenges, and real-world applications of this groundbreaking technology that enables collaborative learning without sharing raw data.",
+      "tags": ["Federated Learning", "Privacy", "Machine Learning"],
+      "paper": null,
+      "content": {
+        "intro": "In the era of big data and artificial intelligence, the traditional approach to machine learning involves centralizing data in a single location for model training. However, this approach raises significant privacy concerns and becomes impractical when dealing with sensitive or distributed data. <strong>Federated Learning (FL)</strong> emerges as a revolutionary paradigm that addresses these challenges.",
+        "sections": [
+          {
+            "title": "What is Federated Learning?",
+            "content": "Federated Learning, first introduced by Google in 2016, is a machine learning approach that trains algorithms across multiple decentralized devices or servers holding local data samples, without exchanging the raw data itself. Instead of moving data to the model, FL brings the model to the data."
+          },
+          {
+            "title": "How Does Federated Learning Work?",
+            "content": "The typical FL process follows these steps: 1) Initialization: A central server initializes the global model and distributes it to participating clients. 2) Local Training: Each client trains the model on their local data for several epochs. 3) Model Updates: Clients send only their model updates back to the server. 4) Aggregation: The server aggregates all updates using algorithms like FedAvg. 5) Iteration: The process repeats until the model converges."
+          },
+          {
+            "title": "Key Advantages",
+            "content": "Privacy Preservation, Reduced Communication Costs, Regulatory Compliance, and Leveraging Edge Data."
+          },
+          {
+            "title": "Real-World Applications",
+            "content": "Mobile Keyboard Prediction (Google Gboard), Healthcare diagnostics, Financial fraud detection, Autonomous Vehicles, Smart Home Devices."
+          }
+        ],
+        "conclusion": "Federated Learning represents a fundamental shift in how we approach machine learning in a privacy-conscious world. As data privacy regulations tighten and edge devices become more powerful, FL is poised to become the standard approach for many AI applications."
+      }
+    },
+    {
+      "id": "fl-challenges",
+      "type": "article",
+      "featured": false,
+      "date": "December 15, 2025",
+      "readTime": "6 min read",
+      "title": "Key Challenges in Federated Learning and How to Address Them",
+      "excerpt": "While Federated Learning offers tremendous potential, it comes with unique challenges including non-IID data, communication efficiency, and security concerns. Let's explore these challenges and the cutting-edge solutions being developed to overcome them.",
+      "tags": ["Non-IID Data", "Communication", "Security"],
+      "paper": null,
+      "content": {
+        "intro": "While Federated Learning opens exciting possibilities for privacy-preserving machine learning, it introduces unique challenges that don't exist in traditional centralized learning.",
+        "sections": [
+          {
+            "title": "Challenge 1: Non-IID Data",
+            "content": "In real-world scenarios, data across clients is rarely independent and identically distributed. Solutions include FedProx, SCAFFOLD, and Personalization techniques."
+          },
+          {
+            "title": "Challenge 2: Communication Efficiency",
+            "content": "Frequent model updates can be bandwidth-intensive. Solutions include Gradient Compression, Federated Averaging, and Hierarchical FL."
+          },
+          {
+            "title": "Challenge 3: Security and Privacy Attacks",
+            "content": "FL can be vulnerable to gradient inversion and model poisoning. Solutions include Differential Privacy, Secure Aggregation, and Byzantine-Robust Aggregation."
+          },
+          {
+            "title": "Challenge 4: System Heterogeneity",
+            "content": "Clients have varying computational capabilities. Solutions include Asynchronous FL, Client Selection, and Model Pruning."
+          }
+        ],
+        "conclusion": "These challenges are active areas of research, and significant progress is being made."
+      }
+    },
+    {
+      "id": "fl-iot",
+      "type": "article",
+      "featured": false,
+      "date": "November 28, 2025",
+      "readTime": "5 min read",
+      "title": "Federated Learning for IoT: Enabling Smart Edge Intelligence",
+      "excerpt": "The Internet of Things generates massive amounts of data at the edge. Federated Learning provides an elegant solution for training models on IoT devices while keeping sensitive data local. Discover how FL is transforming smart homes, healthcare, and industrial IoT.",
+      "tags": ["IoT", "Edge Computing", "Smart Devices"],
+      "paper": null,
+      "content": {
+        "intro": "The Internet of Things (IoT) is generating unprecedented amounts of data at the network edge. Federated Learning provides the perfect framework for leveraging this data while respecting privacy and bandwidth constraints.",
+        "sections": [
+          {
+            "title": "Why Federated Learning for IoT?",
+            "content": "Traditional cloud-based ML faces bandwidth limitations, latency requirements, privacy concerns, and energy constraints in IoT environments."
+          },
+          {
+            "title": "Applications",
+            "content": "Smart Healthcare (wearables), Smart Home (voice assistants), Industrial IoT (predictive maintenance), Smart Transportation (connected vehicles)."
+          },
+          {
+            "title": "Technical Considerations",
+            "content": "Resource-Efficient Models, Hierarchical Architectures, Asynchronous Training, Energy-Aware Scheduling."
+          }
+        ],
+        "conclusion": "The combination of Federated Learning and IoT represents a powerful paradigm for the future of intelligent edge computing."
+      }
+    }
+  ]
+}
+
