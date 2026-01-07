@@ -46,27 +46,27 @@
   --primary: #10b981;
   --primary-light: #34d399;
   --primary-dark: #059669;
-  --primary-glow: rgba(16, 185, 129, 0.15);
+  --primary-glow: rgba(16, 185, 129, 0.1);
   
   --accent: #f59e0b;
   --accent-light: #fbbf24;
   --accent-dark: #d97706;
   
-  --text: #f3f4f6;
-  --text-secondary: #d1d5db;
+  --text: #f9fafb;
+  --text-secondary: #e5e7eb;
   --text-muted: #9ca3af;
   
-  --bg: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --bg-card: #1e293b;
+  --bg: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --bg-card: #1f2937;
   
-  --border: #334155;
-  --border-light: #475569;
+  --border: #374151;
+  --border-light: #4b5563;
   
-  --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  --gradient-card: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
-  --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.1);
+  --gradient-hero: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+  --gradient-card: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+  --shadow-glow: 0 0 30px rgba(16, 185, 129, 0.08);
 }
 
 
@@ -229,8 +229,8 @@ li::marker {
 }
 
 [data-theme="dark"] .site-header {
-  background: rgba(15, 23, 42, 0.95);
-  border-bottom-color: #334155;
+  background: rgba(17, 24, 39, 0.95);
+  border-bottom-color: #374151;
 }
 
 .header-content {
