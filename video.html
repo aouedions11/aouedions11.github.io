@@ -28,11 +28,6 @@
       <h1>Talks & Videos</h1>
       <p class="tagline"><a href="index.html">← Back to Dr. Ons Aouedi's Profile</a></p>
     </div>
-    <div class="header-controls">
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-        <span class="theme-icon">🌙</span>
-      </button>
-    </div>
   </div>
 </header>
 
@@ -114,21 +109,6 @@
     'use strict';
     
     document.getElementById('y').textContent = new Date().getFullYear();
-    
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = themeToggle.querySelector('.theme-icon');
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    themeIcon.textContent = currentTheme === 'light' ? '🌙' : '☀️';
-    
-    themeToggle.addEventListener('click', function() {
-      const theme = document.documentElement.getAttribute('data-theme');
-      const newTheme = theme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeIcon.textContent = newTheme === 'light' ? '🌙' : '☀️';
-    });
     
     const videos = document.querySelectorAll('video');
     
