@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const css = fs.readFileSync(path.join(ROOT, 'style.css'), 'utf8');
 
-const TEXT = ['text', 'text-secondary', 'text-muted', 'primary', 'primary-dark', 'navy', 'accent', 'accent-dark'];
+const TEXT = ['text', 'text-secondary', 'text-muted', 'primary', 'primary-dark', 'navy', 'accent'];
 const BACKGROUNDS = ['bg', 'bg-secondary', 'bg-tertiary', 'bg-card', 'header-bg', 'primary-soft', 'navy-soft', 'accent-soft'];
 const EXTRA = [
   ['on-primary', 'primary'],        // primary buttons, active filters
