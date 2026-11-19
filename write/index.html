@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Write a post | Dr. Ons Aouedi</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1d4ed8">
+  <!-- This page handles the owner's GitHub key, so it may only run its own scripts and only talk to this site and to GitHub. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com https://aouedions11.github.io; base-uri 'none'; form-action 'none'">
+  <link rel="icon" type="image/png" href="/images/favicon-64.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" href="/style.css?v=17">
+  <link rel="stylesheet" href="/css/write.css?v=1">
+  <script src="/js/theme-boot.js"></script>
+</head>
+<body class="write-page">
+<header class="write-bar">
+  <a class="brand" href="/" title="Back to the site">Ons Aouedi</a>
+  <span class="write-bar__title">Write a post</span>
+  <p class="write-status" id="status" role="status" aria-live="polite"></p>
+  <div class="write-bar__actions">
+    <button type="button" class="btn" id="btn-posts">My posts</button>
+    <button type="button" class="btn" id="btn-draft">Save as draft</button>
+    <button type="button" class="btn btn--primary" id="btn-publish">Publish</button>
+  </div>
+  <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="theme-icon theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg class="theme-icon theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg></button>
+</header>
+
+<div class="write-tabs" role="group" aria-label="Show">
+  <button type="button" class="write-tab is-active" id="tab-write" aria-pressed="true">Write</button>
+  <button type="button" class="write-tab" id="tab-preview" aria-pressed="false">Preview</button>
+</div>
+
+<div class="write-alerts">
+  <div class="notice" id="notice" role="alert" hidden></div>
+</div>
+
+<main class="write-main" id="main" data-view="write">
+  <section class="write-pane write-pane--form" id="pane-form" aria-label="Write">
+    <form class="write-form" id="form" novalidate autocomplete="off">
+      <div class="notice notice--info" id="welcome" hidden>
+        <p><strong>How it works.</strong> Write on the left and see the result on the right. Your text is saved in this browser while you type, so you can close the page and come back. When the post is ready, click <strong>Publish</strong>.</p>
+        <button type="button" class="btn" id="welcome-close">Got it</button>
+      </div>
+
+      <div class="field field--title">
+        <label class="sr-only" for="f-title">Title</label>
+        <textarea class="input input--title" id="f-title" rows="1" maxlength="160" placeholder="Title of the post"></textarea>
+        <p class="write-address" id="address"></p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="f-description">Summary</label>
+        <textarea class="input" id="f-description" rows="2" maxlength="320" placeholder="One or two sentences that say what the post is about."></textarea>
+        <p class="field__hint">Shown in the list of posts, in search, and when the link is shared.</p>
+      </div>
+
+      <fieldset class="field">
+        <legend class="field__label">Kind of post</legend>
+        <div class="chips" id="f-type"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend class="field__label">Topics</legend>
+        <div class="chips" id="f-topics"></div>
+        <p class="field__hint">Readers can filter the blog by topic. Choose one or two.</p>
+      </fieldset>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="f-tags">Keywords <span class="field__optional">optional</span></label>
+          <input class="input" type="text" id="f-tags" placeholder="FedAvg, PyTorch, Non-IID">
+          <p class="field__hint">Separated by commas.</p>
+        </div>
+        <div class="field field--date">
+          <label class="field__label" for="f-date">Date</label>
+          <input class="input" type="date" id="f-date">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label class="field__label" for="f-series">Series <span class="field__optional">optional</span></label>
+          <select class="input" id="f-series"></select>
+        </div>
+        <div class="field" id="part-field" hidden>
+          <label class="field__label" for="f-part">Part</label>
+          <select class="input" id="f-part"></select>
+        </div>
+      </div>
+      <div class="field" id="sections-field" hidden>
+        <button type="button" class="btn" id="btn-sections">Add the five sections</button>
+        <p class="field__hint">Adds the headings of a series post: the challenge, the proposed solutions, code, tests, what to remember.</p>
+      </div>
+
+      <fieldset class="field write-paper" id="paper-fields" hidden>
+        <legend class="field__label">The paper you review</legend>
+        <label class="sr-only" for="f-paper-title">Title of the paper</label>
+        <input class="input" type="text" id="f-paper-title" placeholder="Title of the paper">
+        <label class="sr-only" for="f-paper-authors">Authors</label>
+        <input class="input" type="text" id="f-paper-authors" placeholder="Authors">
+        <div class="field-row">
+          <div class="field">
+            <label class="sr-only" for="f-paper-venue">Venue and year</label>
+            <input class="input" type="text" id="f-paper-venue" placeholder="Venue and year, for example ICML 2026">
+          </div>
+          <div class="field">
+            <label class="sr-only" for="f-paper-link">Link to the paper</label>
+            <input class="input" type="url" id="f-paper-link" placeholder="https://arxiv.org/abs/…">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label class="field__label" for="f-code">Link to the code <span class="field__optional">optional</span></label>
+        <input class="input" type="url" id="f-code" placeholder="https://github.com/…">
+        <p class="field__hint">Shown as a "Code and tests" box at the top of the post.</p>
+      </div>
+
+      <div class="field field--body">
+        <label class="field__label" for="f-body">Text</label>
+        <div class="md-toolbar" role="toolbar" aria-label="Formatting">
+          <button type="button" class="md-btn" data-md="h2" title="Section title">Section</button>
+          <button type="button" class="md-btn" data-md="h3" title="Smaller title inside a section">Sub-section</button>
+          <button type="button" class="md-btn md-btn--bold" data-md="bold" title="Bold (Ctrl+B)">B</button>
+          <button type="button" class="md-btn md-btn--italic" data-md="italic" title="Italic (Ctrl+I)">I</button>
+          <button type="button" class="md-btn" data-md="link" title="Link (Ctrl+K)">Link</button>
+          <button type="button" class="md-btn" data-md="list" title="List with dots">List</button>
+          <button type="button" class="md-btn" data-md="numbers" title="Numbered list">1. 2. 3.</button>
+          <button type="button" class="md-btn" data-md="quote" title="Highlighted box, for example key takeaways">Box</button>
+          <button type="button" class="md-btn" data-md="code" title="Block of code">Code</button>
+          <button type="button" class="md-btn" data-md="math" title="Formula on its own line">Formula</button>
+          <button type="button" class="md-btn" data-md="table" title="Table">Table</button>
+          <button type="button" class="md-btn" data-md="image" title="Picture from this computer">Picture</button>
+        </div>
+        <textarea class="md-input" id="f-body" spellcheck="true" placeholder="Write here. Use the buttons above for titles, lists, code, formulas and pictures."></textarea>
+        <input type="file" id="f-image" accept="image/png,image/jpeg,image/webp,image/gif" multiple hidden>
+        <p class="field__hint">You can also drop or paste a picture into the text. Inside a sentence, write code as <code>`code`</code> and a formula as <code>$x^2$</code>.</p>
+      </div>
+
+      <p class="write-more">
+        <button type="button" class="link-button" id="btn-download">Download this post as a file</button>
+      </p>
+    </form>
+  </section>
+
+  <section class="write-pane write-pane--preview" id="pane-preview" aria-label="Preview">
+    <p class="write-preview__note">Preview. Code colours and the "On this page" list are added when the post is published.</p>
+    <iframe id="preview" title="Preview of the post" sandbox="allow-same-origin"></iframe>
+  </section>
+</main>
+
+<dialog class="modal" id="dlg-posts" aria-labelledby="posts-title">
+  <div class="modal__body">
+    <h2 id="posts-title">My posts</h2>
+    <div class="modal__top">
+      <button type="button" class="btn btn--primary" id="btn-new">Start a new post</button>
+      <button type="button" class="btn" id="btn-open-file">Open a file from this computer</button>
+      <input type="file" id="f-open-file" accept=".md,.markdown,text/markdown,text/plain" hidden>
+    </div>
+    <div id="posts-local"></div>
+    <div id="posts-remote"></div>
+    <p class="modal__footnote" id="connection"></p>
+    <div class="modal__actions">
+      <button type="button" class="btn" data-close>Close</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="dlg-connect" aria-labelledby="connect-title">
+  <form class="modal__body" id="connect-form" novalidate>
+    <h2 id="connect-title">Connect to GitHub</h2>
+    <p>Your site is stored on GitHub. To let this page save posts there, GitHub gives you a personal key. You only do this once.</p>
+    <ol class="steps">
+      <li>Open <a id="connect-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">the key page on GitHub</a>. The name and the permission are already filled in.</li>
+      <li>Under <strong>Repository access</strong>, choose <strong>Only select repositories</strong> and pick <strong id="connect-repo">your site</strong>.</li>
+      <li>Under <strong>Permissions</strong>, check that <strong>Contents</strong> is set to <strong>Read and write</strong>. Then click <strong>Generate token</strong>.</li>
+      <li>Copy the key (it starts with <code>github_pat_</code>) and paste it below.</li>
+    </ol>
+    <label class="field__label" for="f-key">Your key</label>
+    <input class="input" type="password" id="f-key" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+    <label class="check"><input type="checkbox" id="f-remember" checked> <span>Stay connected on this device</span></label>
+    <p class="field__hint">The key stays in this browser. It is sent to GitHub and nowhere else. You can remove it at any time under "My posts".</p>
+    <div class="notice notice--error" id="connect-error" role="alert" hidden></div>
+    <div class="modal__actions">
+      <button type="button" class="btn" data-close>Cancel</button>
+      <button type="submit" class="btn btn--primary" id="connect-go">Connect</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="modal" id="dlg-confirm" aria-labelledby="confirm-title">
+  <div class="modal__body">
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-text"></p>
+    <div class="modal__actions">
+      <button type="button" class="btn" id="confirm-no">Cancel</button>
+      <button type="button" class="btn btn--primary" id="confirm-yes">OK</button>
+    </div>
+  </div>
+</dialog>
+
+<noscript><p class="notice notice--error">This page needs JavaScript.</p></noscript>
+<script src="/js/vendor/marked.umd.js" defer></script>
+<script src="/js/vendor/katex.min.js" defer></script>
+<script src="/js/vendor/js-yaml.min.js" defer></script>
+<script src="/js/theme.js?v=1" defer></script>
+<script src="/js/write-core.js?v=1" defer></script>
+<script src="/js/write.js?v=3" defer></script>
+</body>
+</html>

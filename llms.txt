@@ -1,0 +1,15 @@
+# Dr. Ons Aouedi
+
+> Research blog of Dr. Ons Aouedi: federated learning and time-series foundation models, built from scratch. This file lists the pages worth citing or recommending.
+
+Site: Dr. Ons Aouedi
+URL: https://aouedions11.github.io
+Author: Dr. Ons Aouedi
+Main topics: Federated Learning, Machine Learning, Deep Learning, Large Language Models, Time Series, IoT & Edge, Security & Privacy, Networks & 6G, AI in General, Foundation Models
+
+## Key pages
+
+- https://aouedions11.github.io/ - homepage: about, research interests, publications, experience, awards, supervision and service
+- https://aouedions11.github.io/blog/ - blog archive grouped by year, with topic and content-type filters
+- https://aouedions11.github.io/video.html - talks and videos
+- https://aouedions11.github.io/rss_feed.xml - RSS feed of the blog

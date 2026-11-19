@@ -1,0 +1,7 @@
+# Dr. Ons Aouedi: everything is public
+# AI-readable indexes: https://aouedions11.github.io/llms.txt and https://aouedions11.github.io/llms-full.txt
+User-agent: *
+Allow: /
+Disallow: /write/
+
+Sitemap: https://aouedions11.github.io/sitemap.xml

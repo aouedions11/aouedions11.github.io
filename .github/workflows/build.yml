@@ -1,0 +1,74 @@
+# Builds the blog on GitHub, so nobody has to run the build by hand.
+#
+# When a post (or anything else the build reads) changes on main, this workflow runs
+# "npm run build" and commits the generated pages back to main as "Build the blog".
+# GitHub Pages then publishes them. If a post has a mistake, the run fails, nothing is
+# published, and GitHub sends an e-mail with the reason.
+name: Build the blog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'posts/**'
+      - 'site.config.json'
+      - 'build.mjs'
+      - 'index.html'
+      - 'style.css'
+      - 'css/blog.css'
+      - 'js/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to commit the generated pages
+  pages: write      # to ask GitHub Pages to publish them
+
+concurrency:
+  group: build-the-blog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Get the latest main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install the build tools
+        run: npm ci
+
+      - name: Build the blog
+        run: npm run build
+
+      - name: Commit the generated pages
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "The generated pages were already up to date. Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Build the blog"
+          git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Ask GitHub Pages to publish the new pages
+        if: steps.commit.outputs.pushed == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${{ github.repository }}/pages/builds"

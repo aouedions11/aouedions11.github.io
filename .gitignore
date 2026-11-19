@@ -1,0 +1,27 @@
+# Admin files - DO NOT upload to GitHub (keep local only)
+admin.html
+blog-template.html
+
+# System files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.part
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+
+# Node build for the blog
+node_modules/
+
+# Local notes and evidence (not published)
+notes/
+.claude/

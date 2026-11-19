@@ -1,0 +1,169 @@
+{
+  "title": "Dr. Ons Aouedi",
+  "tagline": "Federated learning and time-series foundation models, built from scratch",
+  "url": "https://aouedions11.github.io",
+  "repository": "aouedions11/aouedions11.github.io",
+  "branch": "main",
+  "description": "Research blog of Dr. Ons Aouedi: federated learning and time-series foundation models, built from scratch.",
+  "analyticsId": "G-R3BGV1BGYG",
+  "footerNote": "Research blog",
+  "author": {
+    "name": "Dr. Ons Aouedi",
+    "shortName": "Ons Aouedi",
+    "bio": "Research Scientist at SnT (SIGCOM), University of Luxembourg. Working on federated learning, machine learning, and AI for networks and IoT.",
+    "image": "/images/profile-540.jpg",
+    "email": "ons.aouedi@uni.lu"
+  },
+  "socialImage": "/images/og-card.jpg",
+  "nav": [
+    {
+      "label": "About",
+      "href": "/#about"
+    },
+    {
+      "label": "Publications",
+      "href": "/#publications"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog/"
+    },
+    {
+      "label": "Experience",
+      "href": "/#experience"
+    },
+    {
+      "label": "Talks",
+      "href": "/video.html"
+    }
+  ],
+  "links": [
+    {
+      "label": "Google Scholar",
+      "href": "https://scholar.google.com/citations?user=JMOBDusAAAAJ&hl=en"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/aouedi-ons/",
+      "follow": true
+    },
+    {
+      "label": "GitHub",
+      "href": "https://github.com/aouedions11"
+    },
+    {
+      "label": "ResearchGate",
+      "href": "https://www.researchgate.net/profile/Ons-Aouedi"
+    },
+    {
+      "label": "Email",
+      "href": "mailto:ons.aouedi@uni.lu",
+      "follow": true
+    }
+  ],
+  "blog": {
+    "title": "Blog",
+    "kicker": "Research blog",
+    "subtitle": "Federated learning and time-series foundation models, built from scratch: challenges, proposed solutions, code and tests.",
+    "description": "Federated learning and time-series foundation models, built from scratch: challenges, proposed solutions, code and tests. By Dr. Ons Aouedi.",
+    "banner": "<strong>Open for collaboration.</strong> Seeking research collaborations in Federated Learning, Machine Learning, Time Series Analysis, and IoT Security. Contact: <a href=\"mailto:ons.aouedi@uni.lu\">ons.aouedi@uni.lu</a>",
+    "showPlannedParts": false
+  },
+  "topics": {
+    "federated-learning": "Federated Learning",
+    "machine-learning": "Machine Learning",
+    "deep-learning": "Deep Learning",
+    "llms": "Large Language Models",
+    "time-series": "Time Series",
+    "iot-edge": "IoT & Edge",
+    "security-privacy": "Security & Privacy",
+    "networks": "Networks & 6G",
+    "ai-general": "AI in General",
+    "foundation-models": "Foundation Models"
+  },
+  "types": {
+    "article": {
+      "label": "Article",
+      "plural": "Articles"
+    },
+    "paper-review": {
+      "label": "Paper Review",
+      "plural": "Paper reviews"
+    },
+    "quick-note": {
+      "label": "Quick Note",
+      "plural": "Quick notes"
+    }
+  },
+  "newsletter": {
+    "label": "Subscribe by email",
+    "href": "",
+    "note": "New posts by email. Free."
+  },
+  "series": {
+    "fl-challenges": {
+      "title": "Federated learning, challenge by challenge",
+      "description": "One challenge per post: the issue, the solutions proposed for it, and code that tests them.",
+      "parts": [
+        {
+          "title": "FedAvg from scratch, in plain PyTorch",
+          "label": "Baseline"
+        },
+        {
+          "title": "Non-IID data: when clients disagree",
+          "label": "Challenge"
+        },
+        {
+          "title": "Communication cost: fewer and smaller updates",
+          "label": "Challenge"
+        },
+        {
+          "title": "Slow and missing clients",
+          "label": "Challenge"
+        },
+        {
+          "title": "One model does not fit everyone",
+          "label": "Challenge"
+        },
+        {
+          "title": "Privacy: what model updates can leak",
+          "label": "Challenge"
+        },
+        {
+          "title": "Security: poisoned updates",
+          "label": "Challenge"
+        },
+        {
+          "title": "A client leaves: federated unlearning",
+          "label": "Challenge"
+        }
+      ]
+    },
+    "tsfm-from-scratch": {
+      "title": "Time-series foundation models, from scratch",
+      "description": "One small model, built piece by piece.",
+      "parts": [
+        {
+          "title": "What a time-series foundation model is, and what it is not",
+          "label": "Architecture"
+        },
+        {
+          "title": "From numbers to tokens: patching a time series",
+          "label": "Code and tests"
+        },
+        {
+          "title": "A small forecasting transformer, built from scratch",
+          "label": "Code and tests"
+        },
+        {
+          "title": "Zero-shot or trained on your data? A fair test",
+          "label": "Code and tests"
+        },
+        {
+          "title": "Federated fine-tuning of a time-series model",
+          "label": "Where the two series meet"
+        }
+      ]
+    }
+  }
+}
