@@ -131,7 +131,7 @@ New files start with `draft: true`; delete that line when the post is ready. `--
 |----------------------------|-------------------------------------------------------------------------|
 | `blog/index.html`          | Archive by year, with topic and type filters.                            |
 | `blog/<year>/<slug>.html`  | Post page: contents list, figures, code, share links, "Cite this post", "Read next". |
-| `index.html` (one block)   | The latest posts on the home page, between `<!-- BLOG:START … -->` and `<!-- BLOG:END -->`. The rest of `index.html` is hand-written and left untouched; the build stops if the markers are missing. |
+| `index.html` (one block)   | The latest posts on the home page, between `<!-- BLOG:START … -->` and `<!-- BLOG:END -->`, and the page's date (see below). The rest of `index.html` is hand-written and left untouched; the build stops if the markers are missing. |
 | `search.json`              | Index for the search box in the header (press `/`).                      |
 | `rss_feed.xml`             | RSS 2.0 feed with full post content, for news-reader apps. No page shows a link to it; reader apps find it by themselves. |
 | `sitemap.xml`, `robots.txt`| For search engines.                                                      |
@@ -151,7 +151,9 @@ Site-wide settings live in `site.config.json`: name, tagline, navigation, links,
 
 ## The other pages
 
-`index.html` (home) and `video.html` (talks) are written by hand: edit and commit. Update the "Last updated" date in the footer of `index.html` when you change it.
+`index.html` (home) and `video.html` (talks) are written by hand: edit and commit.
+
+The home page shows the date of its latest change in two places: "Latest update: DD/MM/YYYY" under the highlights and "Last updated DD/MM/YYYY" in the footer. When you change the page by hand, change one of the two; the next build copies the later date to the other. Publishing a post moves both forward to the date of the post, so there is nothing to do then.
 
 The home page, from top to bottom: the introduction card with the About text, the portrait and the **highlights card** (each `<article class="spotlight__item">` is one highlight; add or remove one and the arrows and dots follow); research interests; the blog block (generated); selected publications and the full list; experience next to awards; supervision (one card per Ph.D. student); talks next to service; the collaboration band.
 

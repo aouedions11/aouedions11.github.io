@@ -9,7 +9,8 @@
  *   rss_feed.xml, sitemap.xml, robots.txt, llms.txt, llms-full.txt
  *   blog.html                 redirect from the old single-page blog (keeps old links alive)
  *   404.html                  "page not found" page in the site's design
- *   index.html                only the blog block between the BLOG:START / BLOG:END markers
+ *   index.html                only the blog block between the BLOG:START / BLOG:END markers, and the
+ *                             page's "Latest update" / "Last updated" date (see homeStamp)
  *   js/vendor/                browser copies of the libraries used by the writing page (/write/)
  *
  * Usage:
@@ -73,7 +74,7 @@ const seriesTitle = (p) => (p.series ? SERIES[p.series].title : null);
 const topicLabel = (t) => SITE.topics[t] || t.split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 const safeJson = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 const isHttp = (u) => typeof u === 'string' && /^https?:\/\/\S+$/i.test(u.trim());
-// Newest post date. With no published post: the home page's own "Last updated" date, so the output stays the same from build to build
+// Newest post date. With no published post: the home page's own date (see homeStamp), so the output stays the same from build to build
 const latestDate = (posts) => (posts.length ? new Date(Math.max(...posts.map((p) => Math.max(+p.date, p.updated ? +p.updated : 0)))) : homeStamp() || new Date(0));
 const SERIES = SITE.series || {};
 const SHOW_PLANNED = Boolean(SITE.blog && SITE.blog.showPlannedParts);
@@ -90,10 +91,20 @@ const BLOG_STATE_FILE = path.join(ROOT, 'css', 'blog-state.css');
 // home page, and only what needs a post is left out (the search box, the "All posts" links, the lists)
 let HAS_POSTS = true;
 
-// The "Last updated DD/MM/YYYY" date written in the footer of the home page
-function homeStamp() {
-  const m = fs.existsSync(INDEX_FILE) && /Last updated (\d{2})\/(\d{2})\/(\d{4})/.exec(fs.readFileSync(INDEX_FILE, 'utf8'));
-  return m ? new Date(`${m[3]}-${m[2]}-${m[1]}T00:00:00Z`) : null;
+// The date of the latest change to the site. The home page shows it in two places: "Latest update: DD/MM/YYYY"
+// under the highlights and "Last updated DD/MM/YYYY" in the footer. Change it by hand when the page changes.
+// The build keeps the two the same (the later one counts) and moves them forward to the date of the newest
+// post; it never reads the clock, so the same files always give the same page.
+const HOME_STAMP = /(Latest update: |Last updated )(\d{2})\/(\d{2})\/(\d{4})/g;
+const stampText = (d) => `${pad(d.getUTCDate())}/${pad(d.getUTCMonth() + 1)}/${d.getUTCFullYear()}`;
+
+function homeStamp(html) {
+  let text = html ?? (fs.existsSync(INDEX_FILE) ? fs.readFileSync(INDEX_FILE, 'utf8') : '');
+  const start = text.indexOf(BLOG_START);
+  const end = text.indexOf(BLOG_END);
+  if (start !== -1 && end > start) text = text.slice(0, start) + text.slice(end); // a post's own words are not the page's date
+  const days = [...text.matchAll(HOME_STAMP)].map((m) => +new Date(`${m[4]}-${m[3]}-${m[2]}T00:00:00Z`)).filter((t) => !Number.isNaN(t));
+  return days.length ? new Date(Math.max(...days)) : null;
 }
 
 function toDate(v) {
@@ -770,7 +781,7 @@ ${items}
 }
 
 function sitemapXml(posts) {
-  // The home page carries its own "Last updated DD/MM/YYYY"; it also changes when a post is published
+  // The home page carries its own date (see homeStamp); it also changes when a post is published
   const stamp = homeStamp();
   const newest = latestDate(posts);
   const home = stamp ? new Date(Math.max(+stamp, +newest)) : newest;
@@ -963,7 +974,11 @@ function updateHomeBlock(posts) {
   const indent = html.slice(lineStart, start).replace(/\S.*$/, '');
   const from = start + BLOG_START.length;
   const block = homeBlogHtml(posts, indent);
-  const next = `${html.slice(0, from)}\n${block ? `${block}\n` : ''}${indent}${html.slice(end)}`;
+  // The page's date: the same in both places and never earlier than the newest post (see homeStamp)
+  const stamp = homeStamp(html);
+  const day = stamp && stampText(new Date(Math.max(+stamp, posts.length ? +latestDate(posts) : 0)));
+  const dated = (part) => (day ? part.replace(HOME_STAMP, (all, label) => label + day) : part);
+  const next = `${dated(html.slice(0, from))}\n${block ? `${block}\n` : ''}${indent}${dated(html.slice(end))}`;
   if (next !== html) fs.writeFileSync(INDEX_FILE, next); // untouched when nothing changed
 }
 
@@ -1038,7 +1053,7 @@ function build() {
   copyEditorLibraries();
   for (const p of posts) console.log(`  ✔ ${p.url}  (${typeInfo(p.type).label}, ${isoDate(p.date)}, ${p.readTime} min${p.hasMath ? ', math' : ''}${p.hasCode ? ', code' : ''})`);
   if (!HAS_POSTS) console.log('  · no published post yet: the Blog section shows its description only');
-  console.log(`Done: ${posts.length} posts → blog/, search.json, rss_feed.xml, sitemap.xml, robots.txt, llms.txt, llms-full.txt, blog.html, 404.html, css/blog-state.css, index.html blog block, js/vendor/`);
+  console.log(`Done: ${posts.length} posts → blog/, search.json, rss_feed.xml, sitemap.xml, robots.txt, llms.txt, llms-full.txt, blog.html, 404.html, css/blog-state.css, index.html blog block and date, js/vendor/`);
 }
 
 const argv = process.argv.slice(2);

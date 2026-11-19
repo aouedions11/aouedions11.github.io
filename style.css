@@ -861,6 +861,21 @@ a:hover > .arrow { transform: translateX(3px); }
   background: var(--primary);
 }
 
+/* Date of the latest change to the site, under the highlights. build.mjs keeps it the same as the
+   date in the footer and moves both forward when a newer post is published */
+.hero__updated {
+  width: 100%;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
 /* --------------------------------------------------- research interests */
 .topic-grid {
   display: grid;
@@ -1620,6 +1635,7 @@ a:hover > .arrow { transform: translateX(3px); }
 @media (max-width: 960px) {
   .hero__inner { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .hero__side { grid-template-columns: 260px minmax(0, 1fr); align-items: start; justify-items: stretch; gap: 28px; padding-top: 0; }
+  .hero__updated { grid-column: 1 / -1; }
   .post-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .post-cards > li:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .duo { grid-template-columns: minmax(0, 1fr); }
