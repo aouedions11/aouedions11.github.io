@@ -1,6 +1,6 @@
 # Dr. Ons Aouedi
 
-> Research blog of Dr. Ons Aouedi: federated learning and time-series foundation models, built from scratch. This file lists the pages worth citing or recommending.
+> Research blog of Dr. Ons Aouedi: federated learning and time-series foundation models, built from scratch. This file lists the pages worth citing or recommending. The full text of every post is in https://aouedions11.github.io/llms-full.txt.
 
 Site: Dr. Ons Aouedi
 URL: https://aouedions11.github.io
@@ -13,3 +13,15 @@ Main topics: Federated Learning, Machine Learning, Deep Learning, Large Language
 - https://aouedions11.github.io/blog/ - blog archive grouped by year, with topic and content-type filters
 - https://aouedions11.github.io/video.html - talks and videos
 - https://aouedions11.github.io/rss_feed.xml - RSS feed of the blog
+
+## Series
+
+### Federated learning, challenge by challenge
+
+One challenge per post: the issue, the solutions proposed for it, and code that tests them. https://aouedions11.github.io/blog/#series-fl-challenges (1 of 8 parts published)
+
+- Part 1: https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html - Federated learning: move the model, not the data
+
+## Blog posts (newest first)
+
+- https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html - Federated learning: move the model, not the data (Quick Note, 2026-11-21): What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federated learning: move the model, not the data | Dr. Ons Aouedi</title>
+  <meta name="description" content="What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.">
+  <meta name="author" content="Dr. Ons Aouedi">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="canonical" href="https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Dr. Ons Aouedi">
+  <meta property="og:title" content="Federated learning: move the model, not the data">
+  <meta property="og:description" content="What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.">
+  <meta property="og:url" content="https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html">
+  <meta property="og:image" content="https://aouedions11.github.io/images/og-card.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Federated learning: move the model, not the data">
+  <meta name="twitter:description" content="What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.">
+  <meta name="twitter:image" content="https://aouedions11.github.io/images/og-card.jpg">
+  <meta property="article:published_time" content="2026-11-21T00:00:00Z">
+  <meta property="article:author" content="Dr. Ons Aouedi">
+  <meta property="article:tag" content="Federated learning">
+  <meta property="article:tag" content="FedAvg">
+  <meta property="article:tag" content="Privacy">
+  <meta property="article:tag" content="Edge AI">
+  <meta property="article:tag" content="Overview">
+  <link rel="alternate" type="application/rss+xml" title="Dr. Ons Aouedi RSS feed" href="https://aouedions11.github.io/rss_feed.xml">
+  <link rel="alternate" type="text/plain" title="LLMs Index" href="https://aouedions11.github.io/llms.txt">
+  <link rel="alternate" type="text/plain" title="LLMs Full Index" href="https://aouedions11.github.io/llms-full.txt">
+  <link rel="icon" type="image/png" href="/images/favicon-64.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap">
+  <link rel="stylesheet" href="/style.css?v=701f1a14">
+  <link rel="stylesheet" href="/css/blog.css?v=52ec07a7">
+  <link rel="stylesheet" href="/css/katex/katex.min.css">
+  <script>(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R3BGV1BGYG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-R3BGV1BGYG');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Federated learning: move the model, not the data","description":"What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.","url":"https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html","mainEntityOfPage":"https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html","datePublished":"2026-11-21","dateModified":"2026-11-21","author":{"@type":"Person","name":"Dr. Ons Aouedi","url":"https://aouedions11.github.io/"},"keywords":"Federated learning, FedAvg, Privacy, Edge AI, Overview, Federated Learning, Machine Learning, Deep Learning","image":"https://aouedions11.github.io/images/og-card.jpg","wordCount":2589}</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-site-header>
+  <div class="header-util">
+    <nav class="util-nav" aria-label="Profiles and contact">
+      <a href="https://scholar.google.com/citations?user=JMOBDusAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      <a href="https://www.linkedin.com/in/aouedi-ons/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      <a href="https://github.com/aouedions11" target="_blank" rel="noopener">GitHub<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      <a href="https://www.researchgate.net/profile/Ons-Aouedi" target="_blank" rel="noopener">ResearchGate<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      <a class="util-nav__contact" href="mailto:ons.aouedi@uni.lu">Contact</a>
+    </nav>
+  </div>
+  <div class="header-content">
+    <a class="brand" href="/"><svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 17 7.5 8M16 17l9.5-6M16 17l-2.5 9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><circle class="brand__node" cx="7.5" cy="8" r="3.2"></circle><circle class="brand__node" cx="25.5" cy="11" r="3.2"></circle><circle class="brand__node" cx="13.5" cy="26.5" r="3.2"></circle><circle cx="16" cy="17" r="4.2" fill="currentColor"></circle></svg>Ons Aouedi</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="/#about">About</a>
+      <a href="/#publications">Publications</a>
+      <a href="/blog/" aria-current="page" class="is-current">Blog</a>
+      <a href="/#experience">Experience</a>
+      <a href="/video.html">Talks</a>
+      <div class="site-nav__extra">
+        <a href="https://scholar.google.com/citations?user=JMOBDusAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://www.linkedin.com/in/aouedi-ons/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://github.com/aouedions11" target="_blank" rel="noopener">GitHub<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://www.researchgate.net/profile/Ons-Aouedi" target="_blank" rel="noopener">ResearchGate<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a class="util-nav__contact" href="mailto:ons.aouedi@uni.lu">Contact</a>
+      </div>
+    </nav>
+    <div class="header-controls">
+      <button type="button" class="icon-button header-search__toggle" data-search-toggle aria-expanded="false" aria-controls="site-search-panel" aria-label="Search the blog" title="Search the blog (press /)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+      <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="theme-icon theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg class="theme-icon theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg></button>
+      <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="header-search" id="site-search-panel" hidden>
+    <form class="header-search__form" role="search" action="/blog/" method="get">
+      <label for="site-search-input" class="sr-only">Search posts</label>
+      <input id="site-search-input" class="header-search__input" type="search" name="q" placeholder="Search posts by title, tag, or summary…" autocomplete="off" spellcheck="false">
+      <button type="submit" class="sr-only">Search</button>
+    </form>
+    <p class="header-search__status" aria-live="polite"></p>
+    <ul class="header-search__results" id="site-search-results"></ul>
+  </div>
+</header>
+<main id="main" class="blog-container">
+<article class="post has-toc">
+  <header class="post-header">
+    <p class="post-meta">
+      <span class="post-meta__type">Quick Note</span>
+      <time datetime="2026-11-21">November 21, 2026</time>
+      <span>13 min read</span>
+    </p>
+    <h1 class="post-title">Federated learning: move the model, not the data</h1>
+    <p class="post-description">What federated learning is, how one training round works, the main types and architectures, and the seven challenges this series takes on.</p>
+    <p class="post-byline">By <a href="/">Dr. Ons Aouedi</a></p>
+    <ul class="post-tags" aria-label="Tags"><li class="post-tag">Federated learning</li><li class="post-tag">FedAvg</li><li class="post-tag">Privacy</li><li class="post-tag">Edge AI</li><li class="post-tag">Overview</li></ul>
+  </header>
+  <nav class="series-box" aria-label="Series: Federated learning, challenge by challenge">
+    <p class="series-box__title"><a href="/blog/#series-fl-challenges">Federated learning, challenge by challenge</a></p>
+    <p class="series-box__part">Part 1 of 8</p>
+    <p class="series-box__all"><a href="/blog/#series-fl-challenges">All parts of the series</a></p>
+  </nav>
+  
+  
+  <nav class="article-toc" aria-label="On this page">
+    <details open>
+      <summary>On this page</summary>
+      <ol><li><a href="#move-the-model-not-the-data">Move the model, not the data</a></li><li><a href="#one-round-step-by-step">One round, step by step</a></li><li><a href="#who-the-clients-are-cross-device-and-cross-silo">Who the clients are: cross-device and cross-silo</a></li><li><a href="#how-the-data-is-split-horizontal-vertical-transfer">How the data is split: horizontal, vertical, transfer</a></li><li><a href="#who-coordinates-three-architectures">Who coordinates: three architectures</a></li><li><a href="#where-it-breaks-seven-challenges">Where it breaks: seven challenges</a></li><li><a href="#what-to-remember">What to remember</a></li><li><a href="#going-further">Going further</a></li><li><a href="#references">References</a></li></ol>
+    </details>
+  </nav>
+  <div class="post-content">
+<p>The data that would make our models better is often the data we cannot collect. Messages typed on phones. Scans in hospital archives. Traffic logs inside operator networks. Images taken on board satellites. Federated learning (FL) is a way to learn from this data without moving it.</p>
+<p>This post opens the series <em>Federated learning, challenge by challenge</em>. It explains the idea, walks through one training round, sorts the main kinds of FL, and maps the seven challenges that the next posts take on, one at a time.</p>
+<h2 id="move-the-model-not-the-data">Move the model, not the data <a class="heading-anchor" href="#move-the-model-not-the-data" aria-label="Link to this section">#</a></h2>
+<p>In classic machine learning, the data goes to the model. Every phone, hospital or sensor uploads its data to one server, and the server trains. Federated learning reverses the direction. The server sends the model to where the data lives. Each client trains it locally and sends back only an update. The server combines the updates into a better model, and the cycle repeats. McMahan et al. at Google coined the term in 2016 and proposed the algorithm that most systems still start from [1].</p>
+<p><img src="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-centralized-vs-federated.jpg" alt="Two panels. Left: phones, a hospital, a factory and a cell tower upload raw data to a cloud server. Right: the same clients keep their data, train a local copy of the model, and exchange only model updates with the server." title="Centralized learning moves the data to the model. Federated learning moves the model to the data, and only updates come back." loading="lazy" decoding="async"> </p>
+<p>Why not simply collect the data? There are four common reasons.</p>
+<ul>
+<li><strong>Privacy and regulation.</strong> Personal and medical data is protected by law, for example by the European Union&#39;s General Data Protection Regulation (GDPR), which asks for data minimization. In FL, raw data never leaves the place where it was produced.</li>
+<li><strong>Volume.</strong> Some data is too large to move. A model of a few megabytes is cheaper to send than terabytes of video, network traces or satellite images.</li>
+<li><strong>Ownership.</strong> Hospitals, banks and network operators rarely share data with each other. They may still agree to train a model together.</li>
+<li><strong>Connectivity.</strong> Some clients are reachable only now and then. A satellite in low Earth orbit (LEO) can talk to a ground station only during short contact windows. These windows are too short to download everything the satellite captures, but long enough to send a model update [2].</li>
+</ul>
+<p>FL already runs in products and in large studies. Google trained the next-word prediction model of its Gboard keyboard on users&#39; phones with FL, and the federated model predicted better than the one trained on the server [3]. In medicine, 71 sites on six continents trained a brain tumor segmentation model together, on data from 6,314 patients, sharing only model updates [4].</p>
+<p>One warning before going further: FL is not private by default. The updates still carry information about the data. Researchers have rebuilt training images from shared gradients [5]. Real systems add secure aggregation, so that the server only sees the sum of the updates [6], and differential privacy, which adds calibrated noise to them [7]. Part 6 of this series is about this gap.</p>
+<h2 id="one-round-step-by-step">One round, step by step <a class="heading-anchor" href="#one-round-step-by-step" aria-label="Link to this section">#</a></h2>
+<p>Most FL systems run some version of federated averaging (FedAvg) [1]. One training round has four steps.</p>
+<figure class="post-figure"><a class="post-figure__zoom" href="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-one-round.jpg"><img src="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-one-round.jpg" alt="An isometric scene: a server at the top sends the global model to selected clients (a phone, a hospital, a satellite); each client trains on its own data and sends back an update; the server averages the updates. One client, a car, is grayed out because it was not selected." loading="lazy" decoding="async"></a><figcaption>One round of federated averaging: broadcast, local training, upload, weighted averaging.</figcaption></figure>
+<ol>
+<li><strong>Broadcast.</strong> The server picks a fraction of the clients and sends them the current global model.</li>
+<li><strong>Local training.</strong> Each selected client trains the model on its own data, for a few epochs of stochastic gradient descent (SGD).</li>
+<li><strong>Upload.</strong> Each client sends back its new model weights. Its data stays where it is.</li>
+<li><strong>Aggregate.</strong> The server averages the weights it received. Each client counts in proportion to its amount of data:</li>
+</ol>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><msub><mi>S</mi><mi>t</mi></msub></mrow></munder><mfrac><msub><mi>n</mi><mi>k</mi></msub><msub><mi>m</mi><mi>t</mi></msub></mfrac><mtext> </mtext><msubsup><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>k</mi></msubsup><mo separator="true">,</mo><mspace width="2em"/><msub><mi>m</mi><mi>t</mi></msub><mo>=</mo><munder><mo>∑</mo><mrow><mi>k</mi><mo>∈</mo><msub><mi>S</mi><mi>t</mi></msub></mrow></munder><msub><mi>n</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">w_{t+1} = \sum_{k \in S_t} \frac{n_k}{m_t}\, w_{t+1}^k, \qquad m_t = \sum_{k \in S_t} n_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.5098em;vertical-align:-1.4022em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2963em;"><span style="top:-2.357em;margin-left:-0.0576em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="katex-sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4022em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8991em;"><span style="top:-2.453em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3053em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:2em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:2.4522em;vertical-align:-1.4022em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8479em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2963em;"><span style="top:-2.357em;margin-left:-0.0576em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="katex-sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.143em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4022em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span>
+<p>Here <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>t</mi></msub></mrow><annotation encoding="application/x-tex">S_t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the set of clients selected in round <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">n_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> is the number of examples on client <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span>, and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow><mi>k</mi></msubsup></mrow><annotation encoding="application/x-tex">w_{t+1}^k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1.1555em;vertical-align:-0.3064em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-2.4519em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3064em;"><span></span></span></span></span></span></span></span></span></span> is the model that client <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> sends back. The next round starts from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">w_{t+1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6389em;vertical-align:-0.2083em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0269em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em;"><span></span></span></span></span></span></span></span></span></span>. A full training run takes hundreds or thousands of rounds.</p>
+<p>Step 2 is the heart of the method. In the simplest alternative, federated SGD (FedSGD), each client computes a single gradient per round. FedAvg lets each client make many local updates before it communicates. McMahan et al. showed that this cuts the number of communication rounds by 10 to 100 times compared with synchronized SGD [1]. Averaging works because every client starts each round from the same model, so the local models stay close to each other. When the clients&#39; data differ a lot, they drift apart. That is the first challenge below.</p>
+<h2 id="who-the-clients-are-cross-device-and-cross-silo">Who the clients are: cross-device and cross-silo <a class="heading-anchor" href="#who-the-clients-are-cross-device-and-cross-silo" aria-label="Link to this section">#</a></h2>
+<p>Kairouz et al. distinguish two settings [8]. Cross-device FL runs on phones and Internet of Things (IoT) devices. Cross-silo FL runs across organizations. They lead to very different systems.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Cross-device FL</th>
+<th>Cross-silo FL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clients</td>
+<td>Phones, wearables, IoT devices</td>
+<td>Hospitals, banks, operators</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>Up to billions of devices</td>
+<td>Typically 2 to 100 organizations</td>
+</tr>
+<tr>
+<td>Availability</td>
+<td>Only a fraction online at any time</td>
+<td>Almost always available</td>
+</tr>
+<tr>
+<td>Reliability</td>
+<td>5% or more may drop out of a round</td>
+<td>Few failures</td>
+</tr>
+<tr>
+<td>Participation</td>
+<td>A client takes part once or rarely</td>
+<td>A client can join every round</td>
+</tr>
+<tr>
+<td>Main bottleneck</td>
+<td>Communication</td>
+<td>Computation or communication</td>
+</tr>
+<tr>
+<td>Data split</td>
+<td>By examples (horizontal)</td>
+<td>Horizontal or vertical</td>
+</tr>
+</tbody></table></div>
+<p>Gboard is cross-device. The tumor study is cross-silo. A satellite constellation sits in between: tens to thousands of clients, each with a lot of data, reachable only at predictable times.</p>
+<h2 id="how-the-data-is-split-horizontal-vertical-transfer">How the data is split: horizontal, vertical, transfer <a class="heading-anchor" href="#how-the-data-is-split-horizontal-vertical-transfer" aria-label="Link to this section">#</a></h2>
+<p>Yang et al. sort FL by how the data is split between the parties [9].</p>
+<p><img src="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-data-splits.jpg" alt="Three panels of data tables. Horizontal: two tables share the same columns but hold different rows. Vertical: two tables share the same rows but hold different columns. Federated transfer learning: the two tables overlap only in a small corner." title="Three ways data can be split across parties: horizontal, vertical, and federated transfer learning." loading="lazy" decoding="async"> </p>
+<ul>
+<li><strong>Horizontal FL.</strong> The parties hold the same kind of data about different people. Two hospitals keep the same type of records for different patients. This is the most common case, and the focus of this series.</li>
+<li><strong>Vertical FL.</strong> The parties hold different data about the same people. A bank and an online shop share many customers but record different things about them. They first find their common users without revealing anyone else, then train a model that is split between them.</li>
+<li><strong>Federated transfer learning.</strong> The parties share few users and few features. Transfer learning bridges the gap.</li>
+</ul>
+<h2 id="who-coordinates-three-architectures">Who coordinates: three architectures <a class="heading-anchor" href="#who-coordinates-three-architectures" aria-label="Link to this section">#</a></h2>
+<figure class="post-figure"><a class="post-figure__zoom" href="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-architectures.jpg"><img src="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-architectures.jpg" alt="Three panels. Centralized: one server connected to all clients. Hierarchical: clients connect to edge aggregators (a cell tower, a ground station, a satellite), which connect to the cloud. Decentralized: clients connected to their neighbors, with no server." loading="lazy" decoding="async"></a><figcaption>Three ways to coordinate: a central server, a hierarchy of edge aggregators, or no server at all.</figcaption></figure>
+<ul>
+<li><strong>Centralized.</strong> One server talks to all clients. This is the classic design and the easiest to run. But the server is a single point of failure, a bottleneck, and a party that everyone must trust.</li>
+<li><strong>Hierarchical.</strong> Edge servers aggregate the clients near them, and the cloud aggregates the edge servers. Base stations, gateways and ground stations can play the edge role. Aggregating close to the clients cuts long-distance traffic, which suits mobile networks and satellite constellations. A satellite with no ground station in view can even relay its update to a neighbor over an inter-satellite link [2].</li>
+<li><strong>Decentralized.</strong> There is no server. Each client averages its model with its neighbors, and agreement spreads through the network [10]. Nobody has to be trusted with everything. In exchange, agreement takes longer, and a misbehaving client is harder to spot.</li>
+</ul>
+<h2 id="where-it-breaks-seven-challenges">Where it breaks: seven challenges <a class="heading-anchor" href="#where-it-breaks-seven-challenges" aria-label="Link to this section">#</a></h2>
+<p>The loop above looks simple. In practice, each step can go wrong. Here are the seven challenges this series covers, one post each.</p>
+<figure class="post-figure"><a class="post-figure__zoom" href="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-seven-challenges.jpg"><img src="/images/blog/2026/federated-learning-move-the-model-not-the-data/fl-seven-challenges.jpg" alt="The federated learning loop with seven numbered tags: non-IID data at the clients&#39; data, communication cost on the links, slow and missing clients at a device with an hourglass, personalization at two different users, privacy leakage at an update in transit, poisoned updates at a malicious client, and unlearning at a client leaving." loading="lazy" decoding="async"></a><figcaption>Where the seven challenges hit the federated learning loop. Each one gets its own post in this series.</figcaption></figure>
+<p><strong>1. Non-IID data (Part 2).</strong> The clients&#39; data are not independent and identically distributed (IID). One phone holds mostly photos of cats, another mostly photos of food. Local models drift toward their own data, and their average learns slowly or settles on a worse model. Proposed fixes correct this drift, for example FedProx, which keeps local models close to the global one [11], and SCAFFOLD, which estimates and removes the drift with control variates [12].</p>
+<p><strong>2. Communication cost (Part 3).</strong> Models are large, and uplinks are slow and expensive. The fixes send fewer updates, with more local work or fewer clients per round, or smaller ones, through quantization [13] and sparsification.</p>
+<p><strong>3. Slow and missing clients (Part 4).</strong> Devices differ in speed, battery and connection. In a synchronous round, everyone waits for the slowest client, and some clients never answer. The fixes select clients that can finish before a deadline [14], or aggregate asynchronously, as updates arrive [15].</p>
+<p><strong>4. One model does not fit everyone (Part 5).</strong> The global model fits the average client. A client far from the average gets poor results. Personalized FL learns a shared model plus a version adapted to each client, as in Ditto [16], or groups similar clients and trains one model per group [17].</p>
+<p><strong>5. Privacy: what updates can leak (Part 6).</strong> As seen above, gradients can reveal training data [5]. The defenses are secure aggregation [6], differential privacy [7] and trusted hardware. Each one costs accuracy, computation, or both.</p>
+<p><strong>6. Security: poisoned updates (Part 7).</strong> A malicious client can send a crafted update that degrades the model, or that plants a backdoor firing on inputs of its choice [18]. Robust aggregation rules, such as Krum [19] or the coordinate-wise median [20], try to ignore the outliers.</p>
+<p><strong>7. A client leaves: federated unlearning (Part 8).</strong> Under the GDPR, people can ask for their data to be erased. In FL, a client&#39;s data is mixed into every later version of the model. Retraining from scratch is expensive, so methods such as FedEraser rebuild the model from stored past updates instead [21].</p>
+<p>These challenges pull against each other. Secure aggregation hides each update from the server, which is good for privacy, but it also hides poisoned updates [18]. Robust aggregation drops unusual updates, but with non-IID data, honest clients look unusual too [16]. This tension is what makes FL hard, and why each post in this series weighs the trade-offs instead of only listing the fixes.</p>
+<h2 id="what-to-remember">What to remember <a class="heading-anchor" href="#what-to-remember" aria-label="Link to this section">#</a></h2>
+<blockquote>
+<p><strong>Key takeaways</strong></p>
+<ul>
+<li>Federated learning moves the model to the data. Only model updates travel.</li>
+<li>One round has four steps: broadcast, local training, upload, weighted averaging. Local training is what saves communication.</li>
+<li>Cross-device and cross-silo FL are different worlds: millions of unreliable phones, or a few reliable organizations.</li>
+<li>FL is not private by default. Updates can leak data, and secure aggregation and differential privacy close only part of the gap.</li>
+<li>Seven challenges separate the simple loop from a working system: non-IID data, communication, slow clients, personalization, privacy, security and unlearning. The next posts take them one by one.</li>
+</ul>
+</blockquote>
+<h2 id="going-further">Going further <a class="heading-anchor" href="#going-further" aria-label="Link to this section">#</a></h2>
+<p>For a broad view of the field, two surveys are good starting points: Kairouz et al. [8] and Li et al. [22].</p>
+<h2 id="references">References <a class="heading-anchor" href="#references" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>H. B. McMahan, E. Moore, D. Ramage, S. Hampson, and B. Agüera y Arcas, &quot;Communication-efficient learning of deep networks from decentralized data,&quot; in <em>Proc. AISTATS</em>, 2017. <a href="https://arxiv.org/abs/1602.05629">arXiv:1602.05629</a></li>
+<li>Z. Lin, Z. Wang, Y. Zhang, Y. Wang, O. Aouedi, Z. Fang, J. Xu, J. Yang, V. N. Ha, Y. Liu, M.-S. Alouini, and S. Chatzinotas, &quot;Satellite intelligence: distributed training, collaborative inference, and LLM adaptation in LEO constellations,&quot; preprint, 2026.</li>
+<li>A. Hard, K. Rao, R. Mathews, S. Ramaswamy, F. Beaufays, S. Augenstein, H. Eichner, C. Kiddon, and D. Ramage, &quot;Federated learning for mobile keyboard prediction,&quot; 2018. <a href="https://arxiv.org/abs/1811.03604">arXiv:1811.03604</a></li>
+<li>S. Pati et al., &quot;Federated learning enables big data for rare cancer boundary detection,&quot; <em>Nature Communications</em>, vol. 13, art. 7346, 2022. <a href="https://doi.org/10.1038/s41467-022-33407-5">doi:10.1038/s41467-022-33407-5</a></li>
+<li>L. Zhu, Z. Liu, and S. Han, &quot;Deep leakage from gradients,&quot; in <em>Proc. NeurIPS</em>, 2019. <a href="https://arxiv.org/abs/1906.08935">arXiv:1906.08935</a></li>
+<li>K. Bonawitz et al., &quot;Practical secure aggregation for privacy-preserving machine learning,&quot; in <em>Proc. ACM CCS</em>, 2017. <a href="https://research.google/pubs/pub47246/">Google Research</a></li>
+<li>H. B. McMahan, D. Ramage, K. Talwar, and L. Zhang, &quot;Learning differentially private recurrent language models,&quot; in <em>Proc. ICLR</em>, 2018. <a href="https://arxiv.org/abs/1710.06963">arXiv:1710.06963</a></li>
+<li>P. Kairouz, H. B. McMahan, et al., &quot;Advances and open problems in federated learning,&quot; <em>Foundations and Trends in Machine Learning</em>, vol. 14, no. 1–2, 2021. <a href="https://arxiv.org/abs/1912.04977">arXiv:1912.04977</a></li>
+<li>Q. Yang, Y. Liu, T. Chen, and Y. Tong, &quot;Federated machine learning: concept and applications,&quot; <em>ACM Transactions on Intelligent Systems and Technology</em>, vol. 10, no. 2, 2019. <a href="https://arxiv.org/abs/1902.04885">arXiv:1902.04885</a></li>
+<li>X. Lian, C. Zhang, H. Zhang, C.-J. Hsieh, W. Zhang, and J. Liu, &quot;Can decentralized algorithms outperform centralized algorithms? A case study for decentralized parallel stochastic gradient descent,&quot; in <em>Proc. NeurIPS</em>, 2017. <a href="https://arxiv.org/abs/1705.09056">arXiv:1705.09056</a></li>
+<li>T. Li, A. K. Sahu, M. Zaheer, M. Sanjabi, A. Talwalkar, and V. Smith, &quot;Federated optimization in heterogeneous networks,&quot; in <em>Proc. MLSys</em>, 2020. <a href="https://arxiv.org/abs/1812.06127">arXiv:1812.06127</a></li>
+<li>S. P. Karimireddy, S. Kale, M. Mohri, S. Reddi, S. Stich, and A. T. Suresh, &quot;SCAFFOLD: Stochastic controlled averaging for federated learning,&quot; in <em>Proc. ICML</em>, 2020. <a href="https://arxiv.org/abs/1910.06378">arXiv:1910.06378</a></li>
+<li>D. Alistarh, D. Grubic, J. Li, R. Tomioka, and M. Vojnovic, &quot;QSGD: Communication-efficient SGD via gradient quantization and encoding,&quot; in <em>Proc. NeurIPS</em>, 2017. <a href="https://arxiv.org/abs/1610.02132">arXiv:1610.02132</a></li>
+<li>T. Nishio and R. Yonetani, &quot;Client selection for federated learning with heterogeneous resources in mobile edge,&quot; in <em>Proc. IEEE ICC</em>, 2019. <a href="https://arxiv.org/abs/1804.08333">arXiv:1804.08333</a></li>
+<li>J. Nguyen, K. Malik, H. Zhan, A. Yousefpour, M. Rabbat, M. Malek, and D. Huba, &quot;Federated learning with buffered asynchronous aggregation,&quot; in <em>Proc. AISTATS</em>, 2022. <a href="https://arxiv.org/abs/2106.06639">arXiv:2106.06639</a></li>
+<li>T. Li, S. Hu, A. Beirami, and V. Smith, &quot;Ditto: Fair and robust federated learning through personalization,&quot; in <em>Proc. ICML</em>, 2021. <a href="https://arxiv.org/abs/2012.04221">arXiv:2012.04221</a></li>
+<li>F. Sattler, K.-R. Müller, and W. Samek, &quot;Clustered federated learning: model-agnostic distributed multitask optimization under privacy constraints,&quot; <em>IEEE Transactions on Neural Networks and Learning Systems</em>, vol. 32, no. 8, 2021. <a href="https://arxiv.org/abs/1910.01991">arXiv:1910.01991</a></li>
+<li>E. Bagdasaryan, A. Veit, Y. Hua, D. Estrin, and V. Shmatikov, &quot;How to backdoor federated learning,&quot; in <em>Proc. AISTATS</em>, 2020. <a href="https://arxiv.org/abs/1807.00459">arXiv:1807.00459</a></li>
+<li>P. Blanchard, E. M. El Mhamdi, R. Guerraoui, and J. Stainer, &quot;Machine learning with adversaries: Byzantine tolerant gradient descent,&quot; in <em>Proc. NeurIPS</em>, 2017.</li>
+<li>D. Yin, Y. Chen, K. Ramchandran, and P. Bartlett, &quot;Byzantine-robust distributed learning: towards optimal statistical rates,&quot; in <em>Proc. ICML</em>, 2018. <a href="https://arxiv.org/abs/1803.01498">arXiv:1803.01498</a></li>
+<li>G. Liu, X. Ma, Y. Yang, C. Wang, and J. Liu, &quot;FedEraser: Enabling efficient client-level data removal from federated learning models,&quot; in <em>Proc. IEEE/ACM IWQoS</em>, 2021. <a href="https://doi.org/10.1109/IWQOS52092.2021.9521274">doi:10.1109/IWQOS52092.2021.9521274</a></li>
+<li>T. Li, A. K. Sahu, A. Talwalkar, and V. Smith, &quot;Federated learning: challenges, methods, and future directions,&quot; <em>IEEE Signal Processing Magazine</em>, vol. 37, no. 3, 2020. <a href="https://arxiv.org/abs/1908.07873">arXiv:1908.07873</a></li>
+</ol>
+
+  </div>
+  <footer class="post-footer">
+    <div class="post-actions">
+      <p class="post-share">
+        <span class="post-actions__label">Share</span>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faouedions11.github.io%2Fblog%2F2026%2Ffederated-learning-move-the-model-not-the-data.html" target="_blank" rel="noopener">LinkedIn</a><span class="dot" aria-hidden="true">·</span><a href="https://x.com/intent/post?url=https%3A%2F%2Faouedions11.github.io%2Fblog%2F2026%2Ffederated-learning-move-the-model-not-the-data.html&amp;text=Federated%20learning%3A%20move%20the%20model%2C%20not%20the%20data" target="_blank" rel="noopener">X</a><span class="dot" aria-hidden="true" data-copy-link-dot hidden>·</span><button type="button" class="post-share__copy" data-copy-link="https://aouedions11.github.io/blog/2026/federated-learning-move-the-model-not-the-data.html" hidden>Copy link</button>
+      </p>
+      <p class="post-follow">
+        <span class="post-actions__label">Follow</span>
+        <a href="https://www.linkedin.com/in/aouedi-ons/" target="_blank" rel="noopener">LinkedIn</a><span class="dot" aria-hidden="true">·</span><a href="mailto:ons.aouedi@uni.lu">Email</a>
+      </p>
+    </div>
+    <div class="author-card">
+      <img src="/images/profile-540.jpg" alt="" width="72" height="72" loading="lazy">
+      <div>
+        <h2>Dr. Ons Aouedi</h2>
+        <p>Research Scientist at SnT (SIGCOM), University of Luxembourg. Working on federated learning, machine learning, and AI for networks and IoT.</p>
+        <p class="author-card__links"><a href="https://scholar.google.com/citations?user=JMOBDusAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a><span class="dot" aria-hidden="true">·</span><a href="https://www.linkedin.com/in/aouedi-ons/" target="_blank" rel="noopener">LinkedIn</a><span class="dot" aria-hidden="true">·</span><a href="https://github.com/aouedions11" target="_blank" rel="noopener">GitHub</a><span class="dot" aria-hidden="true">·</span><a href="https://www.researchgate.net/profile/Ons-Aouedi" target="_blank" rel="noopener">ResearchGate</a><span class="dot" aria-hidden="true">·</span><a href="mailto:ons.aouedi@uni.lu">Email</a></p>
+      </div>
+    </div>
+    <p class="post-nav"><a href="/blog/">← All posts</a></p>
+  </footer>
+</article>
+
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a class="footer-name" href="/">Ons Aouedi</a>
+        <p class="footer-tagline">Federated learning and time-series foundation models, built from scratch</p>
+        <p><a href="mailto:ons.aouedi@uni.lu">ons.aouedi@uni.lu</a></p>
+      </div>
+      <nav class="footer-col" aria-label="Blog">
+        <h2>Blog</h2>
+        <ul>
+          <li><a href="/blog/">All posts</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Site">
+        <h2>Site</h2>
+        <ul>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#publications">Publications</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/video.html">Talks</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="footer-top"><a href="#top">Back to top <span aria-hidden="true">↑</span></a></p>
+    <div class="footer-bottom">
+      <nav class="footer-social" aria-label="Profiles">
+        <a href="https://scholar.google.com/citations?user=JMOBDusAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://www.linkedin.com/in/aouedi-ons/" target="_blank" rel="noopener">LinkedIn<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://github.com/aouedions11" target="_blank" rel="noopener">GitHub<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+        <a href="https://www.researchgate.net/profile/Ons-Aouedi" target="_blank" rel="noopener">ResearchGate<svg class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"></path></svg></a>
+      </nav>
+      <p class="footer-meta">© 2026 Ons Aouedi<span class="dot" aria-hidden="true">·</span>Research blog</p>
+    </div>
+  </div>
+</footer>
+<script src="/js/theme.js?v=09b77e78" defer></script>
+<script src="/js/site.js?v=5bc1c21b" defer></script>
+</body>
+</html>

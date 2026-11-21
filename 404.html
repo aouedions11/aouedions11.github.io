@@ -64,9 +64,19 @@
       </div>
     </nav>
     <div class="header-controls">
+      <button type="button" class="icon-button header-search__toggle" data-search-toggle aria-expanded="false" aria-controls="site-search-panel" aria-label="Search the blog" title="Search the blog (press /)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
       <button type="button" class="icon-button theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="theme-icon theme-icon--moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg class="theme-icon theme-icon--sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg></button>
       <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
+  </div>
+  <div class="header-search" id="site-search-panel" hidden>
+    <form class="header-search__form" role="search" action="/blog/" method="get">
+      <label for="site-search-input" class="sr-only">Search posts</label>
+      <input id="site-search-input" class="header-search__input" type="search" name="q" placeholder="Search posts by title, tag, or summary…" autocomplete="off" spellcheck="false">
+      <button type="submit" class="sr-only">Search</button>
+    </form>
+    <p class="header-search__status" aria-live="polite"></p>
+    <ul class="header-search__results" id="site-search-results"></ul>
   </div>
 </header>
 <main id="main" class="blog-container">
@@ -91,7 +101,7 @@
       <nav class="footer-col" aria-label="Blog">
         <h2>Blog</h2>
         <ul>
-          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/blog/">All posts</a></li>
         </ul>
       </nav>
       <nav class="footer-col" aria-label="Site">
